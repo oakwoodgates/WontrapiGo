@@ -144,6 +144,32 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Create an object
+	 * 
+	 * This endpoint will add a new object to your database. 
+	 * It can be used for any object type as long as the 
+	 * correct parameters are supplied. 
+	 * 
+	 * This endpoint allows duplication. If you want to avoid duplicates,
+	 * you should use - wontrapiGo_create_or_update_object()
+	 * 
+	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array  $args Parameters depend upon the object. Some may be required.
+	 * @return json   		Response from OP
+	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0
+	 */
+	public static function create_object( $type, $args = array() ) {
+		$args = self::params( $type, $args );
+		return self::connect()->object()->create( $args );
+	}
+
+	/**
+	 * General helper methods
+	 */
+
+	/**
 	 * Adds objectID to request params
 	 * 
 	 * @param  string $type Object type
