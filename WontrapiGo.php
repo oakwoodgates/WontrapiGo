@@ -144,6 +144,22 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Adds objectID to request params
+	 * 
+	 * @param  string $type Object type
+	 * @param  array  $args Array of data
+	 * @return array        Array of data
+	 * @since  0.1.0
+	 */
+	public static function params( $type = '', $args = array() ) {
+		$a2 = array(
+			'objectID' => self::objectID( $type ), 
+		);
+
+		return array_merge( $args, $a2 );
+	}
+
+	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
