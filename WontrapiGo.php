@@ -350,7 +350,7 @@ class WontrapiGo {
 	 * @since  0.1.0
 	 */
 	public static function objectID( $type ) {
-		// let's not deal with strangeLetterCasing, lowercase ftw
+		// let's not deal with strangeLetterCasing; lowercase ftw
 		$type = strtolower( $type );
 		// find the objectID
 		switch( $type ) {
