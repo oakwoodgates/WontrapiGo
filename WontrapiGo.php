@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WontrapiGo.
+ * WontrapiGo
  *
  * Class for accessing the Ontraport API via Ontraport's SDK for PHP.
  * This was created to make the SDK more accessable and add methods
@@ -13,7 +13,7 @@
  * @link   https://api.ontraport.com/live/ OP API Docs
  * @link   https://github.com/Ontraport/SDK-PHP/ Ontraport's SDK for PHP
  * @license https://opensource.org/licenses/MIT/ MIT
- * @version 0.1.0 Initial
+ * @version 0.1.0 
  */
 /**
  * MIT License
