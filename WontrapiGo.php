@@ -280,6 +280,27 @@ class WontrapiGo {
 		return $response->data->count;
 	}
 
+	/**
+	 * Update an object’s data
+	 *
+	 * Updates an existing object with given data. The object type 
+	 * and ID of the object to update are required. The other fields 
+	 * should only be used if you want to change the existing value.
+	 * 
+	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  integer $id   Required - ID of object to update
+	 * @param  array   $args Parameters to update. Parameters depend upon the object.
+	 * @return json   		 Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#update-an-object-39-s-data OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function update_object( $type, $id, $args = array() ) {
+		$args['id'] = $id;
+		$args['objectID'] = self::objectID( $type );
+		return self::connect()->object()->update( $args );
+	}
+
 
 	/**
 	 * General helper methods
