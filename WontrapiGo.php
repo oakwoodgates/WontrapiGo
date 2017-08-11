@@ -158,12 +158,33 @@ class WontrapiGo {
 	 * @return json   		Response from OP
 	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0
+	 * @since  0.1.0 Initial
 	 */
 	public static function create_object( $type, $args = array() ) {
 		$args = self::params( $type, $args );
 		return self::connect()->object()->create( $args );
 	}
+
+	/**
+	 * Create or merge an object
+	 * 
+	 * Looks for an existing object with a matching unique field and 
+	 * merges supplied data with existing data. If no unique field is 
+	 * supplied or if no existing object has a matching unique field, 
+	 * a new object will be created.
+	 * 
+	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array  $args Parameters depend upon the object. Some may be required.
+	 * @return json   		Response from OP
+	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function create_or_update_object( $type, $args = array() ) {
+		$args = self::params( $type, $args );
+		return self::connect()->object()->saveOrUpdate( $args );
+	}
+
 
 	/**
 	 * General helper methods
