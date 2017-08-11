@@ -206,6 +206,29 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve object meta
+	 *
+	 * Retrieves the field meta data for the specified object.
+	 * 
+	 * @param  string $type   Object type (not for Custom Objects). Converts to objectID.
+	 *                        If none is supplied, meta for all objects will be retrieved.
+	 * @param  string $format Indicates whether the list should be indexed by object name or object type ID. 
+	 *                        Possible values: 'byId' | 'byName'
+	 * @return json Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	function get_object_meta( $type = '', $format = 'byId' ) {
+		$args = array(
+			'objectID' 	=> self::objectID( $type ),
+			'format' => $format
+		);
+		return self::connect()->object()->retrieveMeta( $args );
+	}
+
+
+	/**
 	 * General helper methods
 	 */
 
