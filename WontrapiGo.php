@@ -421,6 +421,20 @@ class WontrapiGo {
 		return self::connect()->contact()->deleteSingle( $args );
 	}
 
+	/**
+	 * Retrieve contact object meta
+	 * 
+	 * Retrieves the field meta data for the contact object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-contact-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_contact_object_meta() {
+		return self::connect()->contact()->retrieveMeta();
+	}
+
 
 	/** 
 	 * ************************************************************
