@@ -352,6 +352,25 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Merge or create a contact
+	 *
+	 * Looks for an existing contact with a matching email field and merges supplied data with 
+	 * existing data. If no email is supplied or if no existing contact has a matching email 
+	 * field, a new contact will be created. Recommended to avoid unwanted duplicate mailings.
+	 * 
+	 * @param  string $email Required - Contact's email (not technically required by Ontraport's API)
+	 * @param  array  $args  Additional data to add to the contact
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#merge-or-create-a-contact OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function create_or_update_contact( $email, $args = array() ) {
+		$args = array( 'email' => $email );
+		return self::connect()->contact()->saveOrUpdate( $args );
+	}
+
+	/**
 	 * Retrieve a specific contact
 	 *
 	 * Retrieves all the information for an existing contact. The only parameter needed
