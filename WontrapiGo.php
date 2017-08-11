@@ -271,18 +271,19 @@ class WontrapiGo {
 	}
 
 	/**
-	 * Count object collection info
+	 * Count objects
 	 *
 	 * Counts the number of objects that match the given criteria.
 	 * 
 	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array  $args Optional - Params for search (see docs)
+	 * @uses   WontrapiGo::get_object_collection_info() to retrieve collection from Ontraport
 	 * @return json   		Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function count_object_collection( $type, $args = array() ) {
+	public static function count_objects( $type, $args = array() ) {
 		$response = self::get_object_collection_info( $type, $args = array() );
 		return $response->data->count;
 	}
