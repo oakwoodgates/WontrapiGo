@@ -155,7 +155,7 @@ class WontrapiGo {
 	 * 
 	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array  $args Parameters depend upon the object. Some may be required.
-	 * @return json   		Response from OP
+	 * @return json   		Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
@@ -175,32 +175,31 @@ class WontrapiGo {
 	 * 
 	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array  $args Parameters depend upon the object. Some may be required.
-	 * @return json   		Response from OP
+	 * @return json   		Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
 	public static function create_or_update_object( $type, $args = array() ) {
-		$args = self::params( $type, $args );
+		$args['objectID'] = self::objectID( $type );
 		return self::connect()->object()->saveOrUpdate( $args );
 	}
 
 	/**
 	 * Retrieve a single object
 	 * 
-	 * Retrieves all the information for an existing object 
-	 * of the specified object type.
+	 * Retrieves all the information for an existing object of the specified object type.
 	 * 
 	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  integer $id   Required - ID of object to get
-	 * @return json   		 Response from OP
+	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial        
 	 */
 	public static function get_object( $type, $id ) {
 		$args = array(
-			'objectID' 	=> wontrapi_objectID( $type ),
+			'objectID' 	=> self::objectID( $type ),
 			'id'		=> $id 
 		);
 		return self::connect()->object()->retrieveSingle( $args );
