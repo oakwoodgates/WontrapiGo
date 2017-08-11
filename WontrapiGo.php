@@ -227,6 +227,24 @@ class WontrapiGo {
 		return self::connect()->object()->retrieveMeta( $args );
 	}
 
+	/**
+	 * Retrieve fields from object meta
+	 *
+	 * Retrieves the set of meta data fields for the specified object.
+	 * 
+	 * @param  string $type   Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return json Response from Ontraport
+	 * @uses   wontrapiGo_get_object_objMeta()
+	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	function get_object_meta_fields( $type ) {
+		$response = self::get_object_meta( $type, 'byId' );
+		$number = self::objectID( $type );
+		return $response->data->$number->fields;
+	}
+
 
 	/**
 	 * General helper methods
