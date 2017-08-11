@@ -185,6 +185,26 @@ class WontrapiGo {
 		return self::connect()->object()->saveOrUpdate( $args );
 	}
 
+	/**
+	 * Retrieve a single object
+	 * 
+	 * Retrieves all the information for an existing object 
+	 * of the specified object type.
+	 * 
+	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  integer $id   Required - ID of object to get
+	 * @return json   		 Response from OP
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial        
+	 */
+	public static function get_object( $type, $id ) {
+		$args = array(
+			'objectID' 	=> wontrapi_objectID( $type ),
+			'id'		=> $id 
+		);
+		return self::connect()->object()->retrieveSingle( $args );
+	}
 
 	/**
 	 * General helper methods
