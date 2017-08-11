@@ -351,6 +351,23 @@ class WontrapiGo {
 		return self::connect()->contact()->create( $args );
 	}
 
+	/**
+	 * Retrieve a specific contact
+	 *
+	 * Retrieves all the information for an existing contact. The only parameter needed
+	 * is the ID for the contact which is returned in the response upon contact creation.
+	 * 
+	 * @param  integer $id ID of the contact
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-specific-contact OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_contact( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->contact()->retrieveSingle( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
