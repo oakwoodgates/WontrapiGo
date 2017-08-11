@@ -158,7 +158,7 @@ class WontrapiGo {
 	 * correct parameters are supplied. 
 	 * 
 	 * This endpoint allows duplication. If you want to avoid duplicates,
-	 * you should use - wontrapiGo_create_or_update_object()
+	 * you should use - WontrapiGo::create_or_update_object()
 	 * 
 	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array  $args Parameters depend upon the object. Some may be required.
@@ -241,7 +241,7 @@ class WontrapiGo {
 	 * 
 	 * @param  string $type   Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @return json Response from Ontraport
-	 * @uses   wontrapiGo_get_object_objMeta()
+	 * @uses   WontrapiGo::get_object_meta()
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
@@ -326,6 +326,29 @@ class WontrapiGo {
 			'id'		=> $id 
 		);
 		return self::connect()->object()->deleteSingle( $args );
+	}
+
+
+	/** 
+	 * ************************************************************
+	 * Contacts 
+	 * ************************************************************
+	 */
+
+	/**
+	 * Create a contact
+	 *
+	 * Creates a new contact object. This endpoint allows duplication; if you want to 
+	 * avoid duplicate emails, you should WontrapiGo::create_or_update_contact() instead.
+	 * 
+	 * @param  array  $args Data for the contact object
+	 * @return json   		Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#create-a-contact OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function create_contact( $args = array() ) {
+		return self::connect()->contact()->create( $args );
 	}
 
 
