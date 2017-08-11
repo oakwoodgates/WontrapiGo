@@ -301,6 +301,26 @@ class WontrapiGo {
 		return self::connect()->object()->update( $args );
 	}
 
+	/**
+	 * Delete a single object
+	 *
+	 * Deletes an existing object of the specified object type.
+	 * 
+	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID 
+	 * @param  integer $id   Required - The ID of the specific object to delete
+	 * @return json   		 Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#delete-a-single-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function delete_object( $type, $id ) {
+		$args = array(
+			'objectID' 	=> self::objectID( $type ),
+			'id'		=> $id 
+		);
+		return self::connect()->object()->deleteSingle( $args );
+	}
+
 
 	/**
 	 * General helper methods
