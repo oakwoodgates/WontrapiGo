@@ -429,7 +429,7 @@ class WontrapiGo {
 				$id = 67;
 				break;
 			default:
-				$id = apply_filters( 'wontrapi_objectID', '', $type );
+				$id = '';
 				break;
 		}
 		return $id;
