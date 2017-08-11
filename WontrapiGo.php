@@ -405,6 +405,22 @@ class WontrapiGo {
 		return self::connect()->contact()->update( $args );
 	}
 
+	/**
+	 * Delete a specific contact
+	 *
+	 * Deletes a specific contact by its ID
+	 * 
+	 * @param  integer $id ID of the contact
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#delete-a-specific-contact OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function delete_contact( $args ) {
+		$args = array( 'id' => $id );
+		return self::connect()->contact()->deleteSingle( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
