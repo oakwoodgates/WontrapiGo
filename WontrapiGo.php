@@ -387,6 +387,24 @@ class WontrapiGo {
 		return self::connect()->contact()->retrieveSingle( $args );
 	}
 
+	/**
+	 * Update a contact
+	 *
+	 * Updates an existing contact with given data. The ID of the contact to update is required. 
+	 * The other fields should only be used if you want to change the existing value.
+	 * 
+	 * @param  integer $id   Required - ID of the contact
+	 * @param  array   $args Optional - Data to update
+	 * @return json          Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#update-a-contact OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function update_contact( $id, $args = array() ) {
+		$args['id'] = $id;
+		return self::connect()->contact()->update( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
