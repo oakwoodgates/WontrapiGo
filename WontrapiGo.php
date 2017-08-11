@@ -98,9 +98,9 @@ class WontrapiGo {
 	}
 
 	protected function __construct( $id, $key, $namespace ) {
-		self::setID( $id );
-		self::setKey( $key );
-		self::setNamespace( $namespace );
+		self::$id = $id;
+		self::$key = $key;
+		self::$namespace = $namespace;
 	}
 
 	/**
@@ -142,6 +142,13 @@ class WontrapiGo {
 	public static function client() {
 		return new self::$namespace . \Ontraport( self::$id, self::$key );
 	}
+
+
+	/** 
+	 * ************************************************************
+	 * Objects 
+	 * ************************************************************
+	 */
 
 	/**
 	 * Create an object
@@ -322,8 +329,10 @@ class WontrapiGo {
 	}
 
 
-	/**
-	 * General helper methods
+	/** 
+	 * ************************************************************
+	 * General helper methods 
+	 * ************************************************************
 	 */
 
 	/**
