@@ -356,6 +356,28 @@ class WontrapiGo {
 		return self::connect()->object()->addToSequence( $args );
 	}
 
+	/**
+	 * Remove an object from a sequence
+	 *
+	 * This endpoint removes one or more objects from one or more sequences.
+	 * 
+	 * @param  string $type      Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  string $ids       Required - An array as a comma-delimited list of the IDs of the objects to be removed from sequence(s).
+	 * @param  string $sequences Required - An array as a comma-delimited list of the IDs of the sequences(s) from which to remove objects.
+	 * @param  array  $args      Optional - Params for search (see docs)
+	 * @return json   			 Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#remove-an-object-from-a-sequence OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function remove_object_from_sequence( $type, $ids, $sequences, $args = array() ) {
+		$args['objectID'] = self::objectID( $type );
+		$args['ids'] = $ids;
+		$args['remove_list'] = $sequences;
+		return self::connect()->object()->removeFromSequence( $args );
+	}
+
+
 	/** 
 	 * ************************************************************
 	 * General helper methods 
