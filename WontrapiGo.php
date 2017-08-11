@@ -245,6 +245,24 @@ class WontrapiGo {
 		return $response->data->$number->fields;
 	}
 
+	/**
+	 * Retrieve object collection info
+	 *
+	 * Retrieves information about a collection of objects, 
+	 * such as the number of objects that match the given criteria.
+	 * 
+	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array  $args Optional - Params for search (see docs)
+	 * @return json   		Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_object_collection_info( $type, $args = array() ) {
+		$args['id'] = $id;
+		return self::connect()->object()->retrieveCollectionInfo( $args );
+	}
+
 
 	/**
 	 * General helper methods
