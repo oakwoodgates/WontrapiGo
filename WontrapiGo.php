@@ -801,7 +801,7 @@ class WontrapiGo {
 	 */
 	public static function get_landingpage_object_meta_fields() {
 		$response = self::get_landingpage_object_meta();
-		$number = self::objectID( 'Contacts' );
+		$number = self::objectID( 'landingpages' );
 		return $response->data->$number->fields;
 	}
 
