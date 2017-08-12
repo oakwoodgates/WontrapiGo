@@ -488,6 +488,34 @@ class WontrapiGo {
 
 	/** 
 	 * ************************************************************
+	 * Tags
+	 * ************************************************************
+	 */
+	
+	/**
+	 * Tag an object
+	 *
+	 * Adds one or more tags to one or more objects.
+	 * 
+	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the objects to be tagged.
+	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) which should be added to objects.
+	 * @param  array  $args Optional - Params for search (see docs)
+	 * @return json   		Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#tag-an-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function add_tag_to_object( $type, $ids, $tags, $args = array() ) {
+		$args['objectID'] = self::objectID( $type );
+		$args['ids'] = $ids;
+		$args['add_list'] = $tags;
+		return self::connect()->object()->addTag( $args );
+	}
+
+
+	/** 
+	 * ************************************************************
 	 * General helper methods 
 	 * ************************************************************
 	 */
