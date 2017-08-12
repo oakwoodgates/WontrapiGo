@@ -889,6 +889,22 @@ class WontrapiGo {
 		return self::connect()->transaction()->retrieveMeta();
 	}
 
+	/**
+	 * Retrieve transaction object meta fields
+	 * 
+	 * Retrieves the set of meta data fields for the transaction object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @uses   WontrapiGo::get_transaction_object_meta() to retrieve data from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-transaction-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_transaction_object_meta_fields() {
+		$response = self::get_transaction_object_meta();
+		$number = self::objectID( 'transactions' );
+		return $response->data->$number->fields;
+	}
 
 	/** 
 	 * ************************************************************
