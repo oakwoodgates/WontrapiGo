@@ -99,7 +99,7 @@ class WontrapiGo {
 	}
 
 	protected function __construct( $id, $key, $namespace ) {
-		require( dirname( __FILE__ ) . 'vendor/Ontraport/SDK-PHP' );
+		require( dirname( __FILE__ ) . 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
 		self::$id = $id;
 		self::$key = $key;
 		self::$namespace = $namespace;
