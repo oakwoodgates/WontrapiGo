@@ -7,14 +7,15 @@
  * This was created to make the SDK more accessable and add methods
  * for common use cases.
  *
- * @author github.com/oakwoodgates 
- * @copyright 2017 	WPGuru4u
- * @link   https://api.ontraport.com/doc/ OP API Documentation
- * @link   https://api.ontraport.com/live/ OP API Docs
- * @link   https://github.com/Ontraport/SDK-PHP/ Ontraport's SDK for PHP
- * @license https://opensource.org/licenses/MIT/ MIT
- * @version 0.1.0 
+ * @author 		github.com/oakwoodgates 
+ * @copyright 	2017 	WPGuru4u
+ * @link   		https://api.ontraport.com/doc/ 			OP API Documentation
+ * @link   		https://api.ontraport.com/live/ 		OP API Docs
+ * @link   		https://github.com/Ontraport/SDK-PHP/ 	Ontraport's SDK for PHP
+ * @license 	https://opensource.org/licenses/MIT/ 	MIT
+ * @version 	0.1.0 
  */
+
 /**
  * MIT License
  *
