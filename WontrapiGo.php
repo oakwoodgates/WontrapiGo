@@ -805,6 +805,21 @@ class WontrapiGo {
 		return $response->data->$number->fields;
 	}
 
+	/**
+	 * Retrieve landing page collection info
+	 *
+	 * Retrieves information about a collection of landing pages, such as the number of landing pages that match the given criteria.
+	 * 
+	 * @param  array $args Search parameters (see docs)
+	 * @return json 	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	public static function get_landingpage_collection_info( $args = array() ) {
+		return self::connect()->landingpage()->retrieveCollectionInfo( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
