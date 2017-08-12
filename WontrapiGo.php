@@ -513,6 +513,27 @@ class WontrapiGo {
 		return self::connect()->object()->addTag( $args );
 	}
 
+	/**
+	 * Remove a tag from an object
+	 *
+	 * This endpoint removes one or more tags from one or more objects.
+	 * 
+	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the objects to remove from tag(s).
+	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) to be removed from objects.
+	 * @param  array  $args Optional - Params for search (see docs)
+	 * @return json   		Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#remove-a-tag-from-an-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function remove_tag_from_object( $type, $ids, $tags, $args = array() ) {
+		$args['objectID'] = self::objectID( $type );
+		$args['ids'] = $ids;
+		$args['remove_list'] = $tags;
+		return self::connect()->object()->removeTag( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
