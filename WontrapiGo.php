@@ -906,6 +906,22 @@ class WontrapiGo {
 		return $response->data->$number->fields;
 	}
 
+	/**
+	 * Retrieve transaction collection info
+	 *
+	 * Retrieves information about a collection of transactions, such as the number of transactions that match the given criteria.
+	 * 
+	 * @param  array $args Search parameters
+	 * @return json 	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-transaction-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial 
+	 */
+	public static function get_transaction_collection_info( $args = array() ) {
+		return self::connect()->transaction()->retrieveCollectionInfo( $args );
+	}
+
+
 	/** 
 	 * ************************************************************
 	 * General helper methods 
