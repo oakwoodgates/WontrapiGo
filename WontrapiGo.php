@@ -436,6 +436,22 @@ class WontrapiGo {
 		return self::connect()->contact()->retrieveMeta();
 	}
 
+	/**
+	 * Retrieve fields from contact object meta 
+	 * 
+	 * Retrieves the set of meta data fields for the contact object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-contact-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_contact_object_meta_fields() {
+		$response = self::get_contact_object_meta();
+		$number = self::objectID( 'Contacts' );
+		return $response->data->$number->fields;
+	}
+
 
 	/** 
 	 * ************************************************************
