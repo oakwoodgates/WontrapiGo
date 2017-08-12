@@ -639,6 +639,7 @@ class WontrapiGo {
 		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
 	}
 
+
 	/** 
 	 * ************************************************************
 	 * Forms (all form types)
@@ -748,6 +749,29 @@ class WontrapiGo {
 	public static function get_smartform_html( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->form()->retrieveSmartFormHTML( $args );
+	}
+
+
+	/** 
+	 * ************************************************************
+	 * Landing Pages
+	 * ************************************************************
+	 */
+
+	/**
+	 * Retrieve a specific landing page
+	 *
+	 * Retrieves all the information for an existing landing page.
+	 * 
+	 * @param  integer $id The landing page ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-specific-landing-page OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_landingpage( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->landingpage()->retrieveSingle( $args );
 	}
 
 
