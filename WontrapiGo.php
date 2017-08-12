@@ -853,6 +853,28 @@ class WontrapiGo {
 		return self::connect()->landingpage()->getHostedURL( $args );
 	}
 
+	/** 
+	 * ************************************************************
+	 * Transactions 
+	 * ************************************************************
+	 */
+
+	/**
+	 * Retrieve a single transaction
+	 *
+	 * Retrieves all the information for an existing transaction.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-transaction OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_transaction( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->retrieveSingle( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
