@@ -654,6 +654,23 @@ class WontrapiGo {
 		return self::connect()->form()->retrieveCollectionInfo( $args );
 	}
 
+	/**
+	 * Count forms
+	 * 
+	 * Count the number of forms that match the given criteria.
+	 * 
+	 * @param  array   $args Search parameters
+	 * @return integer 		 The number of forms that match the given criteria 
+	 * @uses   WontrapiGo::get_form_collection_info() to retrieve collection from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-form-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	public static function count_forms( $args = array() ) {
+		$response = self::get_form_collection_info( $args );
+		return intval( $response->data->count );
+	}
+
 
 	/** 
 	 * ************************************************************
