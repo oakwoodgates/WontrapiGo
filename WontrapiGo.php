@@ -467,6 +467,23 @@ class WontrapiGo {
 		return self::connect()->contact()->retrieveCollectionInfo( $args );
 	}
 
+	/**
+	 * Count contacts
+	 * 
+	 * Count the number of contacts that match the given criteria.
+	 * 
+	 * @param  array   $args Search parameters
+	 * @return integer 		 The number of contacts that match the given criteria 
+	 * @uses   WontrapiGo::get_contact_collection_info() to retrieve collection from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-contact-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	public static function count_contacts( $args = array() ) {
+		$response = self::get_contact_collection_info( $args );
+		return intval( $response->data->count );
+	}
+
 
 	/** 
 	 * ************************************************************
