@@ -551,6 +551,23 @@ class WontrapiGo {
 		return self::add_tag_to_object( 'Contacts', $ids, $tags, $args );
 	}
 
+	/**
+	 * Remove a tag from a contact
+	 *
+	 * This endpoint removes one or more tags from one or more contacts.
+	 * 
+	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the contacts to remove from tag(s).
+	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) to be removed from contacts.
+	 * @param  array  $args Optional - Params for search (see docs)
+	 * @return json   		Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#remove-a-tag-from-an-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function remove_tag_from_contact( $type, $ids, $tags, $args = array() ) {
+		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
+	}
+
 
 	/** 
 	 * ************************************************************
