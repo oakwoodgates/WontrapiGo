@@ -534,6 +534,23 @@ class WontrapiGo {
 		return self::connect()->object()->removeTag( $args );
 	}
 
+	/**
+	 * Add tag to contact
+	 *
+	 * Adds one or more tags to one or more contacts.
+	 * 
+	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the contacts to be tagged.
+	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) which should be added to contacts.
+	 * @param  array  $args Optional - Params for search (see docs)
+	 * @return json   		Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#tag-an-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function add_tag_to_contact( $ids, $tags, $args = array() ) {
+		return self::add_tag_to_object( 'Contacts', $ids, $tags, $args );
+	}
+
 
 	/** 
 	 * ************************************************************
