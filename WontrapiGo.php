@@ -639,6 +639,21 @@ class WontrapiGo {
 		return self::connect()->form()->retrieveSingle( $args );
 	}
 
+	/**
+	 * Retrieve form collection info
+	 *
+	 * Retrieves information about a collection of forms, such as the number of forms that match the given criteria.
+	 * 
+	 * @param  array $args Search parameters
+	 * @return json 	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-form-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	public static function get_form_collection_info( $args = array() ) {
+		return self::connect()->form()->retrieveCollectionInfo( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
