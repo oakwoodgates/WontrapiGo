@@ -788,6 +788,23 @@ class WontrapiGo {
 		return self::connect()->landingpage()->retrieveMeta();
 	}
 
+	/**
+	 * Retrieve landing page fields from meta
+	 * 
+	 * Retrieves the fields from meta data of the landing page object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @uses   WontrapiGo::get_landingpage_object_meta() to retrieve data from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_landingpage_object_meta_fields() {
+		$response = self::get_landingpage_object_meta();
+		$number = self::objectID( 'Contacts' );
+		return $response->data->$number->fields;
+	}
+
 
 	/** 
 	 * ************************************************************
