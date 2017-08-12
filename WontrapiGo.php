@@ -227,7 +227,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	function get_object_meta( $type = '', $format = 'byId' ) {
+	public static function get_object_meta( $type = '', $format = 'byId' ) {
 		$args = array(
 			'objectID' 	=> self::objectID( $type ),
 			'format' => $format
@@ -249,7 +249,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	function get_object_meta_data_object( $type ) {
+	public static function get_object_meta_data_object( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
 		$number = self::objectID( $type );
 		return $response->data->$number;
@@ -267,7 +267,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	function get_object_meta_fields( $type ) {
+	public static function get_object_meta_fields( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
 		$number = self::objectID( $type );
 		return $response->data->$number->fields;
