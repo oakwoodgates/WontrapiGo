@@ -235,6 +235,26 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve data from object meta
+	 *
+	 * Retrieves the set of meta data for the specified object.
+	 * Prepares the result in a way that is ready to be accessed
+	 * independent of object type.
+	 * 
+	 * @param  string $type   Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return json Response from Ontraport
+	 * @uses   WontrapiGo::get_object_meta()
+	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	function get_object_meta_data_object( $type ) {
+		$response = self::get_object_meta( $type, 'byId' );
+		$number = self::objectID( $type );
+		return $response->data->$number;
+	}
+
+	/**
 	 * Retrieve fields from object meta
 	 *
 	 * Retrieves the set of meta data fields for the specified object.
@@ -677,6 +697,21 @@ class WontrapiGo {
 	 * SmartForms 
 	 * ************************************************************
 	 */
+
+	/**
+	 * Retrieve SmartForm meta
+	 * 
+	 * Retrieves the field meta data for a SmartForm. If you want to retrieve meta for another 
+	 * form type, you should use WontrapiGo::get_object_meta() with the appropriate object type.
+	 * 
+	 * @return json Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-smartform-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_smartform_object_meta() {
+		return self::connect()->form()->retrieveMeta();
+	}
 
 
 	/** 
