@@ -814,7 +814,7 @@ class WontrapiGo {
 	 * @return json 	   Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial 
+	 * @since  0.2.0 Initial 
 	 */
 	public static function get_landingpage_collection_info( $args = array() ) {
 		return self::connect()->landingpage()->retrieveCollectionInfo( $args );
@@ -830,11 +830,27 @@ class WontrapiGo {
 	 * @uses   WontrapiGo::get_landingpage_collection_info() to retrieve collection from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-form-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial 
+	 * @since  0.2.0 Initial 
 	 */
 	public static function count_landingpages( $args = array() ) {
 		$response = self::get_landingpage_collection_info( $args );
 		return intval( $response->data->count );
+	}
+
+	/**
+	 * Retrieve hosted URL
+	 *
+	 * Retrieves the hosted URL for a landing page by its ID.
+	 * 
+	 * @param  integer $id The landing page ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-hosted-url OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_landingpage_hosted_url( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->landingpage()->getHostedURL( $args );
 	}
 
 
