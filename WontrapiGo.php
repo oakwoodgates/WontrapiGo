@@ -617,6 +617,28 @@ class WontrapiGo {
 		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
 	}
 
+	/** 
+	 * ************************************************************
+	 * Forms
+	 * ************************************************************
+	 */
+	
+	/**
+	 * Retrieve a specific form
+	 *
+	 * Retrieves all the information for an existing form.
+	 * 
+	 * @param  integer $id The form ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-specific-form OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_form( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->form()->retrieveSingle( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
