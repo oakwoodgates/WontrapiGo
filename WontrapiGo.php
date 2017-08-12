@@ -442,6 +442,7 @@ class WontrapiGo {
 	 * Retrieves the set of meta data fields for the contact object.
 	 * 
 	 * @return json Response from Ontraport
+	 * @uses   WontrapiGo::get_contact_object_meta() to retrieve data from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-contact-object-meta OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
