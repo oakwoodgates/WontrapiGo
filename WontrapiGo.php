@@ -731,6 +731,23 @@ class WontrapiGo {
 		return $response->data->$number->fields;
 	}
 
+	/**
+	 * Retrieve Smart Form HTML
+	 *
+	 * Retrieves the HTML for a SmartForm by its ID. 
+	 * This endpoint does not support ONTRAforms.
+	 * 
+	 * @param  integer $id The form ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-smart-form-html OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial
+	 */
+	public static function get_smartform_html( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->form()->retrieveSmartFormHTML( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
