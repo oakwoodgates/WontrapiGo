@@ -452,6 +452,21 @@ class WontrapiGo {
 		return $response->data->$number->fields;
 	}
 
+	/**
+	 * Retrieve contact collection info
+	 *
+	 * Retrieves information about a collection of contacts, such as the number of contacts that match the given criteria.
+	 * 
+	 * @param  array $args Search parameters
+	 * @return json 	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-contact-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.1.0 Initial 
+	 */
+	public static function get_contact_collection_info( $args = array() ) {
+		return self::connect()->contact()->retrieveCollectionInfo( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
