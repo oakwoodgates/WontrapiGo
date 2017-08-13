@@ -937,6 +937,22 @@ class WontrapiGo {
 		return self::connect()->transaction()->convertToCollections( $args );
 	}
 
+	/**
+	 * Convert transaction to declined
+	 *
+	 * Marks a transaction as declined.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#convert-transaction-to-declined OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function convert_transaction_to_declined( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->convertToDeclined( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
