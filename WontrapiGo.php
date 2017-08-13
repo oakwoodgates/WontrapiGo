@@ -99,7 +99,7 @@ class WontrapiGo {
 	}
 
 	protected function __construct( $id, $key, $namespace ) {
-		require( dirname( __FILE__ ) . 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
+		require(  'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
 		self::$id = $id;
 		self::$key = $key;
 		self::$namespace = $namespace;
@@ -142,7 +142,8 @@ class WontrapiGo {
 	 * @since  0.1.0
 	 */
 	public static function connect() {
-		return new self::$namespace . \Ontraport( self::$id, self::$key );
+		return new \OntraportAPI\Ontraport( self::$id, self::$key );
+	//	return new self::$namespace . \Ontraport( self::$id, self::$key );
 	}
 
 
