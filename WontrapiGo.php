@@ -932,7 +932,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.2.0 Initial
 	 */
-	public static function convert_transaction_to_collections( $id ) {
+	public static function transaction_to_collections( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->convertToCollections( $args );
 	}
@@ -948,7 +948,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.2.0 Initial
 	 */
-	public static function convert_transaction_to_declined( $id ) {
+	public static function transaction_to_declined( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->convertToDeclined( $args );
 	}
@@ -964,7 +964,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.2.0 Initial
 	 */
-	public static function mark_transaction_as_paid( $id ) {
+	public static function transaction_to_paid( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->markAsPaid( $args );
 	}
