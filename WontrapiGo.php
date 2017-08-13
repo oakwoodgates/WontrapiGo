@@ -444,7 +444,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function delete_contact( $args ) {
+	public static function delete_contact( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->contact()->deleteSingle( $args );
 	}
