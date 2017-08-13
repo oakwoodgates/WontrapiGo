@@ -253,8 +253,9 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta_data_object( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
+		$response = json_decode( $response );
 		$number = self::objectID( $type );
-		return $response->data->$number;
+		return json_encode( $response->data->$number );
 	}
 
 	/**
@@ -271,8 +272,9 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta_fields( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
+		$response = json_decode( $response );
 		$number = self::objectID( $type );
-		return $response->data->$number->fields;
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -290,6 +292,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_collection_info( $type, $args = array() ) {
 		$args['id'] = $id;
+		$args['objectID'] = self::objectID( $type );
 		return self::connect()->object()->retrieveCollectionInfo( $args );
 	}
 
@@ -301,14 +304,15 @@ class WontrapiGo {
 	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array  $args Optional - Params for search (see docs)
 	 * @uses   WontrapiGo::get_object_collection_info() to retrieve collection from Ontraport
-	 * @return json   		Response from Ontraport
+	 * @return int   		The count
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
 	public static function count_objects( $type, $args = array() ) {
 		$response = self::get_object_collection_info( $type, $args = array() );
-		return $response->data->count;
+		$response = json_decode( $response );
+		return intval( $response->data->count );
 	}
 
 	/**
@@ -472,8 +476,9 @@ class WontrapiGo {
 	 */
 	public static function get_contact_object_meta_fields() {
 		$response = self::get_contact_object_meta();
+		$response = json_decode( $response );
 		$number = self::objectID( 'Contacts' );
-		return $response->data->$number->fields;
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -505,6 +510,7 @@ class WontrapiGo {
 	 */
 	public static function count_contacts( $args = array() ) {
 		$response = self::get_contact_collection_info( $args );
+		$response = json_decode( $response );
 		return intval( $response->data->count );
 	}
 
@@ -692,6 +698,7 @@ class WontrapiGo {
 	 */
 	public static function count_forms( $args = array() ) {
 		$response = self::get_form_collection_info( $args );
+		$response = json_decode( $response );
 		return intval( $response->data->count );
 	}
 
@@ -731,8 +738,9 @@ class WontrapiGo {
 	 */
 	public static function get_smartform_object_meta_fields() {
 		$response = self::get_smartform_object_meta();
+		$response = json_decode( $response );
 		$number = self::objectID( 'smartforms' );
-		return $response->data->$number->fields;
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -802,8 +810,9 @@ class WontrapiGo {
 	 */
 	public static function get_landingpage_object_meta_fields() {
 		$response = self::get_landingpage_object_meta();
+		$response = json_decode( $response );
 		$number = self::objectID( 'landingpages' );
-		return $response->data->$number->fields;
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -835,6 +844,7 @@ class WontrapiGo {
 	 */
 	public static function count_landingpages( $args = array() ) {
 		$response = self::get_landingpage_collection_info( $args );
+		$response = json_decode( $response );
 		return intval( $response->data->count );
 	}
 
@@ -919,8 +929,9 @@ class WontrapiGo {
 	 */
 	public static function get_transaction_object_meta_fields() {
 		$response = self::get_transaction_object_meta();
+		$response = json_decode( $response );
 		$number = self::objectID( 'transactions' );
-		return $response->data->$number->fields;
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
