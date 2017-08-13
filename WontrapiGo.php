@@ -13,7 +13,7 @@
  * @link   		https://api.ontraport.com/live/ 		OP API Docs
  * @link   		https://github.com/Ontraport/SDK-PHP/ 	Ontraport's SDK for PHP
  * @license 	https://opensource.org/licenses/MIT/ 	MIT
- * @version 	0.1.0 
+ * @version 	0.2.0 
  */
 
 /**
@@ -47,7 +47,7 @@ class WontrapiGo {
 	 * @var  string
 	 * @since  0.1.0
 	 */
-	const VERSION = '0.1.0';
+	const VERSION = '0.2.0';
 
 	/**
 	 * Singleton instance of plugin
@@ -99,7 +99,7 @@ class WontrapiGo {
 	}
 
 	protected function __construct( $id, $key, $namespace ) {
-		require( dirname( __FILE__ ) . 'vendor/Ontraport/SDK-PHP' );
+		require( dirname( __FILE__ ) . 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
 		self::$id = $id;
 		self::$key = $key;
 		self::$namespace = $namespace;
@@ -141,7 +141,7 @@ class WontrapiGo {
 	 * @return [type] [description]
 	 * @since  0.1.0
 	 */
-	public static function client() {
+	public static function connect() {
 		return new self::$namespace . \Ontraport( self::$id, self::$key );
 	}
 
@@ -639,6 +639,7 @@ class WontrapiGo {
 		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
 	}
 
+
 	/** 
 	 * ************************************************************
 	 * Forms (all form types)
@@ -748,6 +749,240 @@ class WontrapiGo {
 	public static function get_smartform_html( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->form()->retrieveSmartFormHTML( $args );
+	}
+
+
+	/** 
+	 * ************************************************************
+	 * Landing Pages
+	 * ************************************************************
+	 */
+
+	/**
+	 * Retrieve a specific landing page
+	 *
+	 * Retrieves all the information for an existing landing page.
+	 * 
+	 * @param  integer $id The landing page ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-specific-landing-page OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_landingpage( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->landingpage()->retrieveSingle( $args );
+	}
+
+	/**
+	 * Retrieve landing page meta
+	 * 
+	 * Retrieves the field meta data for the landing page object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_landingpage_object_meta() {
+		return self::connect()->landingpage()->retrieveMeta();
+	}
+
+	/**
+	 * Retrieve landing page fields from meta
+	 * 
+	 * Retrieves the fields from meta data of the landing page object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @uses   WontrapiGo::get_landingpage_object_meta() to retrieve data from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_landingpage_object_meta_fields() {
+		$response = self::get_landingpage_object_meta();
+		$number = self::objectID( 'landingpages' );
+		return $response->data->$number->fields;
+	}
+
+	/**
+	 * Retrieve landing page collection info
+	 *
+	 * Retrieves information about a collection of landing pages, such as the number of landing pages that match the given criteria.
+	 * 
+	 * @param  array $args Search parameters (see docs)
+	 * @return json 	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial 
+	 */
+	public static function get_landingpage_collection_info( $args = array() ) {
+		return self::connect()->landingpage()->retrieveCollectionInfo( $args );
+	}
+
+	/**
+	 * Count landing pages
+	 * 
+	 * Count the number of landing pages that match the given criteria.
+	 * 
+	 * @param  array   $args Search parameters
+	 * @return integer 		 The number of forms that match the given criteria 
+	 * @uses   WontrapiGo::get_landingpage_collection_info() to retrieve collection from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-form-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial 
+	 */
+	public static function count_landingpages( $args = array() ) {
+		$response = self::get_landingpage_collection_info( $args );
+		return intval( $response->data->count );
+	}
+
+	/**
+	 * Retrieve hosted URL
+	 *
+	 * Retrieves the hosted URL for a landing page by its ID.
+	 * 
+	 * @param  integer $id The landing page ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-hosted-url OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_landingpage_hosted_url( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->landingpage()->getHostedURL( $args );
+	}
+
+	/** 
+	 * ************************************************************
+	 * Transactions 
+	 * ************************************************************
+	 */
+
+	/**
+	 * Retrieve a single transaction
+	 *
+	 * Retrieves all the information for an existing transaction.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-transaction OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_transaction( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->retrieveSingle( $args );
+	}
+
+	/**
+	 * Retrieve an order
+	 *
+	 * Retrieves all information about a specified order.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-an-order OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_order( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->retrieveOrder( $args );
+	}
+
+	/**
+	 * Retrieve transaction object meta
+	 * 
+	 * Retrieves the field meta data for the transaction object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-transaction-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_transaction_object_meta() {
+		return self::connect()->transaction()->retrieveMeta();
+	}
+
+	/**
+	 * Retrieve transaction object meta fields
+	 * 
+	 * Retrieves the set of meta data fields for the transaction object.
+	 * 
+	 * @return json Response from Ontraport
+	 * @uses   WontrapiGo::get_transaction_object_meta() to retrieve data from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-transaction-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_transaction_object_meta_fields() {
+		$response = self::get_transaction_object_meta();
+		$number = self::objectID( 'transactions' );
+		return $response->data->$number->fields;
+	}
+
+	/**
+	 * Retrieve transaction collection info
+	 *
+	 * Retrieves information about a collection of transactions, such as the number of transactions that match the given criteria.
+	 * 
+	 * @param  array $args Search parameters
+	 * @return json 	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-transaction-collection-info OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial 
+	 */
+	public static function get_transaction_collection_info( $args = array() ) {
+		return self::connect()->transaction()->retrieveCollectionInfo( $args );
+	}
+
+	/**
+	 * Convert transaction to collections
+	 *
+	 * Marks a transaction as in collections.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#convert-transaction-to-collections OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function transaction_to_collections( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->convertToCollections( $args );
+	}
+
+	/**
+	 * Convert transaction to declined
+	 *
+	 * Marks a transaction as declined.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#convert-transaction-to-declined OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function transaction_to_declined( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->convertToDeclined( $args );
+	}
+
+	/**
+	 * Mark transaction as paid
+	 *
+	 * Marks a transaction as paid.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#mark-transaction-to-paid OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function transaction_to_paid( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->markAsPaid( $args );
 	}
 
 

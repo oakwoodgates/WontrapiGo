@@ -5,6 +5,24 @@
 
 ## Changelog
 
+## v0.2.0 
+
+* Introduced:
+	* ``` get_landingpage() ```
+	* ``` get_landingpage_object_meta() ```
+	* ``` get_landingpage_object_meta_fields() ```
+	* ``` get_landingpage_collection_info() ```
+	* ``` count_landingpages() ```
+	* ``` get_landingpage_hosted_url() ```
+	* ``` get_transaction() ```
+	* ``` get_order() ```
+	* ``` get_transaction_object_meta() ```
+	* ``` get_transaction_object_meta_fields() ```
+	* ``` get_transaction_collection_info() ```
+	* ``` transaction_to_collections() ```
+	* ``` transaction_to_declined() ```
+	* ``` transaction_to_paid() ```
+
 ## v0.1.0 
 
 * Introduced:
