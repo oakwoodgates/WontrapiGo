@@ -921,6 +921,22 @@ class WontrapiGo {
 		return self::connect()->transaction()->retrieveCollectionInfo( $args );
 	}
 
+	/**
+	 * Convert transaction to collections
+	 *
+	 * Marks a transaction as in collections.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#convert-transaction-to-collections OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function convert_transaction_to_collections( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->convertToCollections( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
