@@ -13,7 +13,7 @@
  * @link   		https://api.ontraport.com/live/ 		OP API Docs
  * @link   		https://github.com/Ontraport/SDK-PHP/ 	Ontraport's SDK for PHP
  * @license 	https://opensource.org/licenses/MIT/ 	MIT
- * @version 	0.1.0 
+ * @version 	0.2.0 
  */
 
 /**
@@ -47,7 +47,7 @@ class WontrapiGo {
 	 * @var  string
 	 * @since  0.1.0
 	 */
-	const VERSION = '0.1.0';
+	const VERSION = '0.2.0';
 
 	/**
 	 * Singleton instance of plugin
@@ -984,8 +984,6 @@ class WontrapiGo {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->markAsPaid( $args );
 	}
-
-
 
 
 	/** 
