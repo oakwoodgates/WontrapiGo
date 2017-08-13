@@ -141,7 +141,7 @@ class WontrapiGo {
 	 * @return [type] [description]
 	 * @since  0.1.0
 	 */
-	public static function client() {
+	public static function connect() {
 		return new self::$namespace . \Ontraport( self::$id, self::$key );
 	}
 
