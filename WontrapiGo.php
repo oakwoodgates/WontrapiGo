@@ -953,6 +953,22 @@ class WontrapiGo {
 		return self::connect()->transaction()->convertToDeclined( $args );
 	}
 
+	/**
+	 * Mark transaction as paid
+	 *
+	 * Marks a transaction as paid.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#mark-transaction-to-paid OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function mark_transaction_as_paid( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->markAsPaid( $args );
+	}
+
 
 	/** 
 	 * ************************************************************
