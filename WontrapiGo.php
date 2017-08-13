@@ -642,7 +642,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function remove_tag_from_contact( $type, $ids, $tags, $args = array() ) {
+	public static function remove_tag_from_contact( $ids, $tags, $args = array() ) {
 		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
 	}
 
@@ -1005,10 +1005,31 @@ class WontrapiGo {
 	 */
 
 	/**
+	 * Get the ID of an object (contact, form, etc ) from a successfully
+	 * created, updated, or retrieved request.
+	 * 
+	 * @param  json $response JSON response from Ontraport
+	 * @return int            ID of the object
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	function get_id_from_response( $response ) {
+		$response = json_decode( $response );
+		$id = 0;
+		if ( isset( $response->data->id ) ) {
+			$id = $response->data->id;
+		} elseif ( isset( $response->data->attrs->id ) ) {
+			$id = $response->data->attrs->id;
+		}
+		return intval( $id );
+	}
+
+	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
 	 * @return integer       Object's objectID
+	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0
 	 */
 	public static function objectID( $type ) {
