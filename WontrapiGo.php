@@ -876,6 +876,22 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve an order
+	 *
+	 * Retrieves all information about a specified order.
+	 * 
+	 * @param  integer $id Required - The transaction ID
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-an-order OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.2.0 Initial
+	 */
+	public static function get_order( $id ) {
+		$args = array( 'id' => $id );
+		return self::connect()->transaction()->retrieveOrder( $args );
+	}
+
+	/**
 	 * Retrieve transaction object meta
 	 * 
 	 * Retrieves the field meta data for the transaction object.
@@ -968,6 +984,8 @@ class WontrapiGo {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->markAsPaid( $args );
 	}
+
+
 
 
 	/** 
