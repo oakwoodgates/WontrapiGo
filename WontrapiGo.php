@@ -434,6 +434,25 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Get contacts where a field is compared to a value.
+	 *
+	 * Example: To search contacts by email - get_contacts_where( 'email', '=', 'sample@email.com' );
+	 * 
+	 * @param  string  $field      Field to search
+	 * @param  string  $operator   Possible values: > < >= <= = IN
+	 * @param  str|int $value      Value to compare
+	 * @param  array   $args       Array of additional parameters used to search, sort, etc contacts
+	 * @return string              String of data like "{field}{=}{value}"
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_contacts_where( $field, $operator, $value, $args = array() ) {
+		$args['condition'] = self::prepare_search_condition( $field, $operator = '=', $value );
+		return self::get_contacts( $args );
+	}
+
+	/**
 	 * Update a contact
 	 *
 	 * Updates an existing contact with given data. The ID of the contact to update is required. 
