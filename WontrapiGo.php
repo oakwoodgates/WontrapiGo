@@ -1073,6 +1073,8 @@ class WontrapiGo {
 			$id = $response->data->id;
 		} elseif ( isset( $response->data->attrs->id ) ) {
 			$id = $response->data->attrs->id;
+		} elseif ( isset( $response->data[0]->id ) ) {
+			$id = $response->data[0]->id;
 		}
 		return intval( $id );
 	}
