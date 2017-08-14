@@ -1043,6 +1043,30 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Prepare a simple A JSON encoded string to more specifically set criteria 
+	 * for which contacts to bring back. For example, to check that a field 
+	 * equals a certain value. See criteria examples for more details.
+	 * 
+	 * @param  string  $field      Field to search
+	 * @param  string  $operand    Possible values: > < >= <= = IN
+	 * @param  str|int $value      Value to compare
+	 * @return string              String of data like "{field}{=}{value}"
+	 * @link   https://api.ontraport.com/doc/#criteria Ontraport criteria docs
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public function prepare_search_condition( $field, $operand = '=', $value ) {
+
+		if ( is_numeric ( $value ) ) {
+			$condition = "{$field}{$operand}{$value}";
+		} else {
+			$condition = "{$field}{$operand}'{$value}'";
+		}
+
+		return $condition;
+	}
+
+	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
