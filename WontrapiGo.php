@@ -416,6 +416,24 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple contacts
+	 *
+	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  array $args Array of parameters used to search, sort, etc contacts
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-contacts OP API Documentation
+	 * @link  https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_contacts( $args = array() ) {
+		return self::connect()->contact()->retrieveMultiple( $args );
+	}
+
+	/**
 	 * Update a contact
 	 *
 	 * Updates an existing contact with given data. The ID of the contact to update is required. 
