@@ -1066,7 +1066,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	function get_id_from_response( $response ) {
+	public static function get_id_from_response( $response ) {
 		$response = json_decode( $response );
 		$id = 0;
 		if ( isset( $response->data->id ) ) {
@@ -1092,7 +1092,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	public function prepare_search_condition( $field, $operand = '=', $value ) {
+	public static function prepare_search_condition( $field, $operand = '=', $value ) {
 
 		if ( is_numeric ( $value ) ) {
 			$condition = "{$field}{$operand}{$value}";
