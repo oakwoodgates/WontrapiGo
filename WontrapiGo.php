@@ -442,14 +442,30 @@ class WontrapiGo {
 	 * @param  string  $operator   Possible values: > < >= <= = IN
 	 * @param  str|int $value      Value to compare
 	 * @param  array   $args       Array of additional parameters used to search, sort, etc contacts
-	 * @return string              String of data like "{field}{=}{value}"
+	 * @return json   	           Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_contacts_where( $field, $operator, $value, $args = array() ) {
-		$args['condition'] = self::prepare_search_condition( $field, $operator = '=', $value );
+		$args['condition'] = self::prepare_search_condition( $field, $operator, $value );
 		return self::get_contacts( $args );
+	}
+
+	/**
+	 * Get contact by email
+	 *
+	 * Note: it is possible to receive more than one contact if your contacts are not merged.
+	 *
+	 * @param  string $email Value to compare
+	 * @param  array  $args  Array of additional parameters used to search, sort, etc contacts
+	 * @return json   	     Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_contact_by_email( $email, $args = array() ) {
+		return self::get_contacts_where( 'email', '=', $email, $args );
 	}
 
 	/**
