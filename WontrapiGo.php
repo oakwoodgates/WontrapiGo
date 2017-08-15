@@ -1104,6 +1104,31 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Return a JSON response the way you want it
+	 * 
+	 * @param  string $option   How do you want the $response returned?
+	 *                          object|id|json
+	 * @param  json  $response  JSON response from Ontraport
+	 * @return mixed            Object (stdClass), ID (integer), or JSON (string)
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function return( $option = 'object', $response ){
+		switch( $option ) {
+			case 'object':
+				return json_decode( $response );
+				break;
+			case 'id':
+				return WontarpiGo::get_id_from_response( $response );
+				break;
+			case 'json':
+			default:
+				return $response;
+				break;
+		}
+	}
+
+	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
