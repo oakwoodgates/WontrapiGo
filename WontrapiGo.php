@@ -968,6 +968,21 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Get transactions for a contact.
+	 *
+	 * @param  int   $contact_id ID of Contact
+	 * @param  array $args       Array of additional parameters used to search, sort, etc transactions
+	 * @return json   	         Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_transactions_by_contact_id( $contact_id, $args = array() ) {
+		$args['condition'] = self::$help::prepare_search_condition( 'contact_id', '=', $contact_id );
+		return self::get_transactions( $args );
+	}
+
+	/**
 	 * Retrieve an order
 	 *
 	 * Retrieves all information about a specified order.
