@@ -37,7 +37,7 @@ class WontrapiHelp {
 		return self::$single_instance;
 	}
 
-	protected function __construct( $id, $key, $namespace ) {}
+	protected function __construct() {}
 
 	/** 
 	 * ************************************************************
