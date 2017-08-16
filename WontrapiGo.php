@@ -950,6 +950,24 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple transactions
+	 *
+	 * Retrieves a collection of transactions based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  array $args Array of parameters used to search, sort, etc transactions
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-transactions OP API Documentation
+	 * @link  https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_transactions( $args = array() ) {
+		return self::connect()->transaction()->retrieveMultiple( $args );
+	}
+
+	/**
 	 * Retrieve an order
 	 *
 	 * Retrieves all information about a specified order.
