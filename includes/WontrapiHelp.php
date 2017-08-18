@@ -189,6 +189,9 @@ class WontrapiHelp {
 			case 'imapsettings':
 				$id = 101;
 				break;
+			case 'invoices': // not an actual ontraport type, but when transactions are returned with WontrapiGo::get_object_meta( 'Transactions' ) they are referred to as "Invoice"
+				$id = 46;
+				break;
 			case 'landingpages':
 				$id = 20;
 				break;
