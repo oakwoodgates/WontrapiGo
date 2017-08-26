@@ -226,6 +226,26 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple objects
+	 * 
+	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array $args Array of parameters used to search, sort, etc objects
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial      
+	 */
+	public static function get_objects( $type, $args = array() ) {
+		$args['objectID'] = self::$help::objectID( $type );
+		return self::connect()->object()->retrieveMultiple( $args );
+	}
+
+	/**
 	 * Retrieve object meta
 	 *
 	 * Retrieves the field meta data for the specified object.
