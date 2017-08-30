@@ -82,6 +82,14 @@ class WontrapiGo {
 	public static $namespace = 'OntraportAPI';
 
 	/**
+	 * WontrapiHelp
+	 *
+	 * @var class
+	 * @since  0.3.0
+	 */
+	public static $help;
+
+	/**
 	 * Creates or returns an instance of this class.
 	 *
 	 * @param  string $id        App ID for Ontraport
@@ -99,7 +107,9 @@ class WontrapiGo {
 	}
 
 	protected function __construct( $id, $key, $namespace ) {
-		require( dirname( __FILE__ ) . 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
+		require( 'includes/WontrapiHelp.php' );
+		require( 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
+		self::$help = WontrapiHelp::init();
 		self::$id = $id;
 		self::$key = $key;
 		self::$namespace = $namespace;
@@ -142,7 +152,8 @@ class WontrapiGo {
 	 * @since  0.1.0
 	 */
 	public static function connect() {
-		return new self::$namespace . \Ontraport( self::$id, self::$key );
+		return new \OntraportAPI\Ontraport( self::$id, self::$key );
+	//	return new self::$namespace . \Ontraport( self::$id, self::$key );
 	}
 
 
@@ -170,7 +181,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function create_object( $type, $args = array() ) {
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		return self::connect()->object()->create( $args );
 	}
 
@@ -190,7 +201,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function create_or_update_object( $type, $args = array() ) {
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		return self::connect()->object()->saveOrUpdate( $args );
 	}
 
@@ -208,10 +219,30 @@ class WontrapiGo {
 	 */
 	public static function get_object( $type, $id ) {
 		$args = array(
-			'objectID' 	=> self::objectID( $type ),
+			'objectID' 	=> self::$help::objectID( $type ),
 			'id'		=> $id 
 		);
 		return self::connect()->object()->retrieveSingle( $args );
+	}
+
+	/**
+	 * Retrieve multiple objects
+	 * 
+	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array $args Array of parameters used to search, sort, etc objects
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial      
+	 */
+	public static function get_objects( $type, $args = array() ) {
+		$args['objectID'] = self::$help::objectID( $type );
+		return self::connect()->object()->retrieveMultiple( $args );
 	}
 
 	/**
@@ -230,7 +261,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta( $type = '', $format = 'byId' ) {
 		$args = array(
-			'objectID' 	=> self::objectID( $type ),
+			'objectID' 	=> self::$help::objectID( $type ),
 			'format' => $format
 		);
 		return self::connect()->object()->retrieveMeta( $args );
@@ -252,8 +283,9 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta_data_object( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
-		$number = self::objectID( $type );
-		return $response->data->$number;
+		$response = json_decode( $response );
+		$number = self::$help::objectID( $type );
+		return json_encode( $response->data->$number );
 	}
 
 	/**
@@ -270,8 +302,9 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta_fields( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
-		$number = self::objectID( $type );
-		return $response->data->$number->fields;
+		$response = json_decode( $response );
+		$number = self::$help::objectID( $type );
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -289,6 +322,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_collection_info( $type, $args = array() ) {
 		$args['id'] = $id;
+		$args['objectID'] = self::$help::objectID( $type );
 		return self::connect()->object()->retrieveCollectionInfo( $args );
 	}
 
@@ -300,14 +334,15 @@ class WontrapiGo {
 	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array  $args Optional - Params for search (see docs)
 	 * @uses   WontrapiGo::get_object_collection_info() to retrieve collection from Ontraport
-	 * @return json   		Response from Ontraport
+	 * @return int   		The count
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
 	public static function count_objects( $type, $args = array() ) {
 		$response = self::get_object_collection_info( $type, $args = array() );
-		return $response->data->count;
+		$response = json_decode( $response );
+		return intval( $response->data->count );
 	}
 
 	/**
@@ -327,7 +362,7 @@ class WontrapiGo {
 	 */
 	public static function update_object( $type, $id, $args = array() ) {
 		$args['id'] = $id;
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		return self::connect()->object()->update( $args );
 	}
 
@@ -345,7 +380,7 @@ class WontrapiGo {
 	 */
 	public static function delete_object( $type, $id ) {
 		$args = array(
-			'objectID' 	=> self::objectID( $type ),
+			'objectID' 	=> self::$help::objectID( $type ),
 			'id'		=> $id 
 		);
 		return self::connect()->object()->deleteSingle( $args );
@@ -411,6 +446,59 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple contacts
+	 *
+	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  array $args Array of parameters used to search, sort, etc contacts
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-contacts OP API Documentation
+	 * @link  https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_contacts( $args = array() ) {
+		return self::connect()->contact()->retrieveMultiple( $args );
+	}
+
+	/**
+	 * Get contacts where a field is compared to a value.
+	 *
+	 * Example: To search contacts by email - get_contacts_where( 'email', '=', 'sample@email.com' );
+	 * 
+	 * @param  string  $field      Field to search
+	 * @param  string  $operator   Possible values: > < >= <= = IN
+	 * @param  str|int $value      Value to compare
+	 * @param  array   $args       Array of additional parameters used to search, sort, etc contacts
+	 * @return json   	           Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_contacts_where( $field, $operator, $value, $args = array() ) {
+		$args['condition'] = self::$help::prepare_search_condition( $field, $operator, $value );
+		return self::get_contacts( $args );
+	}
+
+	/**
+	 * Get contact by email
+	 *
+	 * Note: it is possible to receive more than one contact if your contacts are not merged.
+	 *
+	 * @param  string $email Value to compare
+	 * @param  array  $args  Array of additional parameters used to search, sort, etc contacts
+	 * @return json   	     Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_contact_by_email( $email, $args = array() ) {
+		return self::get_contacts_where( 'email', '=', $email, $args );
+	}
+
+	/**
 	 * Update a contact
 	 *
 	 * Updates an existing contact with given data. The ID of the contact to update is required. 
@@ -439,7 +527,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function delete_contact( $args ) {
+	public static function delete_contact( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->contact()->deleteSingle( $args );
 	}
@@ -471,8 +559,9 @@ class WontrapiGo {
 	 */
 	public static function get_contact_object_meta_fields() {
 		$response = self::get_contact_object_meta();
-		$number = self::objectID( 'Contacts' );
-		return $response->data->$number->fields;
+		$response = json_decode( $response );
+		$number = self::$help::objectID( 'Contacts' );
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -504,6 +593,7 @@ class WontrapiGo {
 	 */
 	public static function count_contacts( $args = array() ) {
 		$response = self::get_contact_collection_info( $args );
+		$response = json_decode( $response );
 		return intval( $response->data->count );
 	}
 
@@ -529,7 +619,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function add_object_to_sequence( $type, $ids, $sequences, $args = array() ) {
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $sequences;
 		return self::connect()->object()->addToSequence( $args );
@@ -550,7 +640,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function remove_object_from_sequence( $type, $ids, $sequences, $args = array() ) {
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $sequences;
 		return self::connect()->object()->removeFromSequence( $args );
@@ -578,7 +668,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function add_tag_to_object( $type, $ids, $tags, $args = array() ) {
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $tags;
 		return self::connect()->object()->addTag( $args );
@@ -599,7 +689,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function remove_tag_from_object( $type, $ids, $tags, $args = array() ) {
-		$args['objectID'] = self::objectID( $type );
+		$args['objectID'] = self::$help::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $tags;
 		return self::connect()->object()->removeTag( $args );
@@ -635,7 +725,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function remove_tag_from_contact( $type, $ids, $tags, $args = array() ) {
+	public static function remove_tag_from_contact( $ids, $tags, $args = array() ) {
 		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
 	}
 
@@ -691,6 +781,7 @@ class WontrapiGo {
 	 */
 	public static function count_forms( $args = array() ) {
 		$response = self::get_form_collection_info( $args );
+		$response = json_decode( $response );
 		return intval( $response->data->count );
 	}
 
@@ -730,8 +821,9 @@ class WontrapiGo {
 	 */
 	public static function get_smartform_object_meta_fields() {
 		$response = self::get_smartform_object_meta();
-		$number = self::objectID( 'smartforms' );
-		return $response->data->$number->fields;
+		$response = json_decode( $response );
+		$number = self::$help::objectID( 'smartforms' );
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -801,8 +893,9 @@ class WontrapiGo {
 	 */
 	public static function get_landingpage_object_meta_fields() {
 		$response = self::get_landingpage_object_meta();
-		$number = self::objectID( 'landingpages' );
-		return $response->data->$number->fields;
+		$response = json_decode( $response );
+		$number = self::$help::objectID( 'landingpages' );
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -834,6 +927,7 @@ class WontrapiGo {
 	 */
 	public static function count_landingpages( $args = array() ) {
 		$response = self::get_landingpage_collection_info( $args );
+		$response = json_decode( $response );
 		return intval( $response->data->count );
 	}
 
@@ -873,6 +967,39 @@ class WontrapiGo {
 	public static function get_transaction( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->retrieveSingle( $args );
+	}
+
+	/**
+	 * Retrieve multiple transactions
+	 *
+	 * Retrieves a collection of transactions based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  array $args Array of parameters used to search, sort, etc transactions
+	 * @return json   	   Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-transactions OP API Documentation
+	 * @link  https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_transactions( $args = array() ) {
+		return self::connect()->transaction()->retrieveMultiple( $args );
+	}
+
+	/**
+	 * Get transactions for a contact.
+	 *
+	 * @param  int   $contact_id ID of Contact
+	 * @param  array $args       Array of additional parameters used to search, sort, etc transactions
+	 * @return json   	         Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial
+	 */
+	public static function get_transactions_by_contact_id( $contact_id, $args = array() ) {
+		$args['condition'] = self::$help::prepare_search_condition( 'contact_id', '=', $contact_id );
+		return self::get_transactions( $args );
 	}
 
 	/**
@@ -918,8 +1045,9 @@ class WontrapiGo {
 	 */
 	public static function get_transaction_object_meta_fields() {
 		$response = self::get_transaction_object_meta();
-		$number = self::objectID( 'transactions' );
-		return $response->data->$number->fields;
+		$response = json_decode( $response );
+		$number = self::$help::objectID( 'transactions' );
+		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -983,242 +1111,6 @@ class WontrapiGo {
 	public static function transaction_to_paid( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->transaction()->markAsPaid( $args );
-	}
-
-
-	/** 
-	 * ************************************************************
-	 * General helper methods 
-	 * ************************************************************
-	 */
-
-	/**
-	 * Get objectID for type
-	 * 
-	 * @param  string  $type Type of object
-	 * @return integer       Object's objectID
-	 * @since  0.1.0
-	 */
-	public static function objectID( $type ) {
-		// let's not deal with strangeLetterCasing; lowercase ftw
-		$type = strtolower( $type );
-		// find the objectID
-		switch( $type ) {
-			case 'automationlogitems':
-				$id = 100;
-				break;
-			case 'blasts':
-				$id = 13;
-				break;
-			case 'campaigns':
-				$id = 75;
-				break;
-			case 'commissions':
-				$id = 38;
-				break;
-			case 'contacts':
-				$id = 0;
-				break;
-			case 'contents':
-				$id = 78;
-				break;
-			case 'couponcodes':
-				$id = 124;
-				break;
-			case 'couponproducts':
-				$id = 125;
-				break;
-			case 'coupons':
-				$id = 123;
-				break;
-			case 'customdomains':
-				$id = 58;
-				break;
-			case 'customervalueitems':
-				$id = 96;
-				break;
-			case 'customobjectrelationships':
-				$id = 102;
-				break;
-			case 'customobjects':
-				$id = 99;
-				break;
-			case 'deletedorders':
-				$id = 146;
-				break;
-			case 'facebookapps':
-				$id = 53;
-				break;
-			case 'forms':
-				$id = 122;
-				break;
-			case 'fulfillmentlists':
-				$id = 19;
-				break;
-			case 'gateways':
-				$id = 70;
-				break;
-			case 'groups':
-				$id = 3;
-				break;
-			case 'imapsettings':
-				$id = 101;
-				break;
-			case 'landingpages':
-				$id = 20;
-				break;
-			case 'leadrouters':
-				$id = 69;
-				break;
-			case 'leadsources':
-				$id = 76;
-				break;
-			case 'logitems':
-				$id = 4;
-				break;
-			case 'mediums':
-				$id = 77;
-				break;
-			case 'messages':
-				$id = 7;
-				break;
-			case 'messagetemplates':
-				$id = 68;
-				break;
-			case 'notes':
-				$id = 12;
-				break;
-			case 'offers':
-				$id = 65;
-				break;
-			case 'openorders':
-				$id = 44;
-				break;
-			case 'orders':
-				$id = 52;
-				break;
-			case 'partnerproducts':
-				$id = 87;
-				break;
-			case 'partnerprograms':
-				$id = 35;
-				break;
-			case 'partnerpromotionalitems':
-				$id = 40;
-				break;
-			case 'partners':
-				$id = 36;
-				break;
-			case 'postcardorders':
-				$id = 27;
-				break;
-			case 'products':
-				$id = 16;
-				break;
-			case 'productsaleslogs':
-				$id = 95;
-				break;
-			case 'purchasehistorylogs':
-				$id = 30;
-				break;
-			case 'purchases':
-				$id = 17;
-				break;
-			case 'referrals':
-				$id = 37;
-				break;
-			case 'roles':
-				$id = 61;
-				break;
-			case 'rules':
-				$id = 6;
-				break;
-			case 'salesreportitems':
-				$id = 94;
-				break;
-			case 'scheduledbroadcasts':
-				$id = 23;
-				break;
-			case 'sequences':
-				$id = 5;
-				break;
-			case 'sequencesubscribers':
-				$id = 8;
-				break;
-			case 'shippedpackages':
-				$id = 47;
-				break;
-			case 'shippingcollecteditems':
-				$id = 97;
-				break;
-			case 'shippingfulfillmentruns':
-				$id = 49;
-				break;
-			case 'shippingmethods':
-				$id = 64;
-				break;
-			case 'smartforms':
-				$id = 22; // informed guess from https://api.ontraport.com/doc/#retrieve-smartform-meta
-				break;
-			case 'staffs':
-				$id = 2;
-				break;
-			case 'subscriberretentionitems':
-				$id = 92;
-				break;
-			case 'subscriptionsaleitems':
-				$id = 93;
-				break;
-			case 'tags':
-				$id = 14;
-				break;
-			case 'tagsubscribers':
-				$id = 138;
-				break;
-			case 'taskhistoryitems':
-				$id = 90;
-				break;
-			case 'tasknotes':
-				$id = 89;
-				break;
-			case 'taskoutcomes':
-				$id = 66;
-				break;
-			case 'tasks':
-				$id = 1;
-				break;
-			case 'taxes':
-				$id = 63;
-				break;
-			case 'taxescollecteditems':
-				$id = 98;
-				break;
-			case 'terms':
-				$id = 79;
-				break;
-			case 'trackedlinks':
-				$id = 80;
-				break;
-			case 'transactions':
-				$id = 46;
-				break;
-			case 'upsellforms':
-				$id = 42;
-				break;
-			case 'urlhistoryitems':
-				$id = 88;
-				break;
-			case 'wordpressmemberships':
-				$id = 43;
-				break;
-			case 'wordpresssites':
-				$id = 67;
-				break;
-			default:
-				$id = '';
-				break;
-		}
-		return $id;
 	}
 
 }
