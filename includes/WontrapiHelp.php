@@ -125,6 +125,29 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * See if contact has a tag
+	 *
+	 * @param  json $contact_data JSON response from WontrapiGo::get_contact();
+	 * @param  int  $tag          Tag ID in Ontraport
+	 * @return bool               true if contact has tag
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.1 Initial
+	 */
+	public static function contact_has_tag( $contact, $tag ) {
+		$contact = self::get_object_from_response($contact);
+		if ( isset( $contact->contact_cat ) ) {
+			$contact_tags = $contact->contact_cat;
+			if ($contact_tags) {
+				$contact_tags = array_filter(explode('*/*',$contact_tags));
+				if (in_array($tag, $contact_tags)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Return a JSON response the way you want it
 	 * 
 	 * @param  string $option   How do you want the $response returned?
