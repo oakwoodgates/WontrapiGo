@@ -55,7 +55,11 @@ class WontrapiHelp {
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_id_from_response( $response ) {
-		$response = json_decode( $response );
+		if(is_string($response)) {
+			$response = json_decode( $response );
+		} elseif (is_array($response)) {
+			$response = (object) $response;
+		}
 		$id = 0;
 		if ( isset( $response->data->id ) ) {
 			$id = $response->data->id;
@@ -63,8 +67,37 @@ class WontrapiHelp {
 			$id = $response->data->attrs->id;
 		} elseif ( isset( $response->data[0]->id ) ) {
 			$id = $response->data[0]->id;
+		} elseif ( isset( $response->id ) ) {
+			$id = $response->id;
 		}
 		return intval( $id );
+	}
+
+	/**
+	 * Get the important stuff from a successfully created, updated, or retrieved request.
+	 * 
+	 * @param  json $response JSON response from Ontraport
+	 * @return obj            Object (empty string if no valid response passed)
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial
+	 */
+	public static function get_object_from_response( $response ) {
+		if(is_string($response)) {
+			$response = json_decode( $response );
+		} elseif (is_array($response)) {
+			$response = (object) $response;
+		}
+		$data = '';
+		if ( isset( $response->data->id ) ) {
+			$data = $response->data;
+		} elseif ( isset( $response->data->attrs->id ) ) {
+			$data = $response->data->attrs;
+		} elseif ( isset( $response->data[0]->id ) ) {
+			$data = $response->data[0];
+		} elseif ( isset( $response->id ) ) {
+			$data = $response;
+		}
+		return $data;
 	}
 
 	/**
