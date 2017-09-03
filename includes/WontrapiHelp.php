@@ -79,7 +79,7 @@ class WontrapiHelp {
 	 * @param  json $response JSON response from Ontraport
 	 * @return obj            Object (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
-	 * @since  0.4.0 Initial
+	 * @since  0.3.1 Initial
 	 */
 	public static function get_object_from_response( $response ) {
 		if(is_string($response)) {
