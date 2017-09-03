@@ -10,7 +10,6 @@
  * @link   		https://api.ontraport.com/live/ 		OP API Docs
  * @link   		https://github.com/Ontraport/SDK-PHP/ 	Ontraport's SDK for PHP
  * @license 	https://opensource.org/licenses/MIT/ 	MIT
- * @version 	0.3.0 
  */
 
 class WontrapiHelp {
