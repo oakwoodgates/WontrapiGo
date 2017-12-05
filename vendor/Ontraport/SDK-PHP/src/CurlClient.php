@@ -16,6 +16,11 @@ class CurlClient
      */
     private $_requestHeaders = array();
 
+    /**
+     * @var int the last HTTP status code received
+     */
+    private $_lastStatusCode = null;
+
     public function __construct($apiKey,$siteID)
     {
         $this->_setRequestHeader("Api-key", $apiKey);
@@ -55,9 +60,11 @@ class CurlClient
      * @param array $requiredParams
      * @param int $method
      *
-     * @throws \Exception
-     *
      * @return boolean
+     *
+     * @throws Exceptions\HttpMethodException
+     * @throws Exceptions\RequiredParamsException
+     * @throws Exceptions\TypeException
      */
     private function _validateRequest($requestParams, $requiredParams, $method)
     {
@@ -65,19 +72,19 @@ class CurlClient
 
         if (!in_array($method, $allowedMethods))
         {
-            throw new \Exception($method . " is not a supported HTTP method.");
+            throw new Exceptions\HttpMethodException($method);
         }
 
         if ($requestParams && (!is_array($requestParams)))
         {
             $dataType = gettype($requestParams);
-            throw new \Exception("Invalid input: expected array, received $dataType");
+            throw new Exceptions\TypeException($dataType);
         }
 
         if ($missingParams = $this->_checkRequiredParams($requestParams, $requiredParams))
         {
             $missingParams = implode(",",$missingParams);
-            throw new \Exception("Invalid input: missing required parameter(s): $missingParams");
+            throw new Exceptions\RequiredParamsException($missingParams);
         }
 
         return true;
@@ -181,7 +188,14 @@ class CurlClient
 
             case "delete":
                 curl_setopt($curlHandle, CURLOPT_CUSTOMREQUEST, "DELETE");
-                $url = $url."?".$requestParams;
+                if (array_key_exists("Content-Type", $this->_requestHeaders) && $this->_requestHeaders["Content-Type"] == "Content-Type: application/json")
+                {
+                    curl_setopt($curlHandle, CURLOPT_POSTFIELDS, $requestParams);
+                }
+                else
+                {
+                    $url = $url."?".$requestParams;
+                }
                 break;
         }
 
@@ -191,10 +205,21 @@ class CurlClient
         curl_setopt($curlHandle, CURLOPT_TIMEOUT, 60);
 
         $result = curl_exec($curlHandle);
+        $this->_lastStatusCode = curl_getinfo($curlHandle, CURLINFO_HTTP_CODE);
         curl_close($curlHandle);
 
         unset($this->_requestHeaders["Content-Type"]);
 
         return $result;
+    }
+
+    /**
+     * @brief get the last HTTP status code received
+     *
+     * @return int
+     */
+    public function getLastStatusCode()
+    {
+         return $this->_lastStatusCode;
     }
 }

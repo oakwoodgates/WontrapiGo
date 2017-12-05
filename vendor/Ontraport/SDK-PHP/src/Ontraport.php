@@ -14,12 +14,12 @@ require_once("APIAutoloader.php");
 class Ontraport
 {
     /**
-     * @var string the base url http requests are made to
+     * @var string the base URL HTTP requests are made to
      */
     const REQUEST_URL = "https://api.ontraport.com";
 
     /**
-     * @var int the api version number for this wrapper
+     * @var int the API version number for this wrapper
      */
     const API_VERSION = 1;
 
@@ -87,6 +87,17 @@ class Ontraport
         return $this->_httpClient;
     }
 
+    /**
+     * @brief Make an HTTP request
+     *
+     * @param $requestParams
+     * @param string $url
+     * @param string $method
+     * @param array $requiredParams
+     * @param array $options
+     *
+     * @return mixed
+     */
     public function request($requestParams, $url, $method, $requiredParams, $options)
     {
         $client = $this->getHttpClient();
@@ -94,6 +105,16 @@ class Ontraport
 
         return $client->httpRequest($requestParams, $url, $method, $requiredParams, $options);
     }
+
+    /**
+     * @brief gets the last HTTP status code received by the HTTP Client
+     *
+     * @return int
+     */
+     public function getLastStatusCode()
+     {
+         return $this->getHttpClient()->getLastStatusCode();
+     }
 
     /**
      * @brief constructs an api endpoint
@@ -112,9 +133,9 @@ class Ontraport
     /**
      * @param integer $object
      *
-     * @throws \Exception
-     *
      * @return CustomObjects instance
+     *
+     * @throws Exceptions\CustomObjectException
      */
     public function custom($object)
     {
@@ -130,8 +151,16 @@ class Ontraport
 
         else
         {
-            throw new \Exception("Invalid object ID.");
+            throw new Exceptions\CustomObjectException();
         }
+    }
+
+    /**
+     * @return CampaignBuilderItems
+     */
+    public function campaignbuilder()
+    {
+        return $this->getApi("CampaignBuilderItems");
     }
 
     /**
@@ -156,6 +185,14 @@ class Ontraport
     public function landingpage()
     {
         return $this->getApi("LandingPages");
+    }
+
+    /**
+     * @return Messages
+     */
+    public function message()
+    {
+        return $this->getApi("Messages");
     }
 
     /**
