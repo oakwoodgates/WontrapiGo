@@ -483,7 +483,7 @@ class WontrapiGo {
 	}
 
 	/**
-	 * Get contact by email
+	 * Get contacts by email
 	 *
 	 * Note: it is possible to receive more than one contact if your contacts are not merged.
 	 *
@@ -494,7 +494,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	public static function get_contact_by_email( $email, $args = array() ) {
+	public static function get_contacts_by_email( $email, $args = array() ) {
 		return self::get_contacts_where( 'email', '=', $email, $args );
 	}
 
