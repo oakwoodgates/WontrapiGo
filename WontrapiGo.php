@@ -226,6 +226,42 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Get an object ID by associated email
+	 * 
+	 * Retrieves the IDs of contact objects or custom objects by their email fields. 
+	 * You can retrieve an array of all the IDs of objects with matching emails, 
+	 * or you can retrieve the first matching ID.
+	 * 
+	 * @param  string  $email   Required - Email of object to get
+	 * @param  integer $all     0 for the first ID found, 1 for an array of all matching IDs
+	 * @param  string  $type    Object type. Converts to objectID. Default is Contact.
+	 * @return integer|array   	ID's from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.2 Initial        
+	 */
+	public static function get_object_id_by_email( $email, $all = 0, $type = 'contact' ) {
+		$args = array(
+			'objectID' 	=> self::$help::objectID( $type ),
+			'email'		=> $email,
+			'all'		=> (int) $all 
+		);
+		$response = self::connect()->object()->retrieveSingle( $args );
+		$response = json_decode( $response );
+		if ( $all ) {
+			if ( isset( $response->data->ids ) ) {
+				return $response->data->ids;
+			}
+		} else {
+			if ( isset( $response->data->id ) ) {
+				return (int) $response->data->id;
+			}
+		}
+
+		return ( $all ) ? 0 : array();
+	}
+
+	/**
 	 * Retrieve multiple objects
 	 * 
 	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
@@ -496,6 +532,24 @@ class WontrapiGo {
 	 */
 	public static function get_contacts_by_email( $email, $args = array() ) {
 		return self::get_contacts_where( 'email', '=', $email, $args );
+	}
+
+	/**
+	 * Get a contact's ID by associated email
+	 * 
+	 * Retrieves the IDs of contact objects by their email fields. 
+	 * You can retrieve an array of all the IDs of contacts with matching emails, 
+	 * or you can retrieve the first matching ID.
+	 * 
+	 * @param  string  $email   Required - Email of contact to get
+	 * @param  integer $all     0 for the first ID found, 1 for an array of all matching IDs
+	 * @return integer|array   	ID's from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.2 Initial         
+	 */
+	public static function get_contact_id_by_email( $email, $all = 0 ) {
+		return self::get_object_id_by_email( $email, $all, 'contact' );
 	}
 
 	/**
@@ -1119,7 +1173,7 @@ class WontrapiGo {
 	 * @param  int $contact_id       Required - The Contact ID
 	 * @param  int $invoice_template Required - The ID of the invoice template to use for this transaction. Default is 1.
 	 * @param  int $gateway_id       Required - The ID of the gateway to use for this transaction. Note that this is 
-	 *                               the ID of the gateway object itself and not the external_id of the gateway. A transaction canâ€™t succeed without a valid gateway. 
+	 *                               the ID of the gateway object itself and not the external_id of the gateway. A transaction cannot succeed without a valid gateway. 
 	 * @param  arr $offer            Required - The product and pricing offer for the transaction.
 	 * @param  arr $args             Other optional data to pass
 	 * @return json                  Response from Ontraport
