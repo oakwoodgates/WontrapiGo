@@ -54,9 +54,9 @@ class WontrapiHelp {
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_id_from_response( $response ) {
-		if(is_string($response)) {
+		if( is_string( $response ) ) {
 			$response = json_decode( $response );
-		} elseif (is_array($response)) {
+		} elseif ( is_array( $response ) ) {
 			$response = (object) $response;
 		}
 		$id = 0;
@@ -81,9 +81,9 @@ class WontrapiHelp {
 	 * @since  0.3.1 Initial
 	 */
 	public static function get_object_from_response( $response ) {
-		if(is_string($response)) {
+		if( is_string( $response ) ) {
 			$response = json_decode( $response );
-		} elseif (is_array($response)) {
+		} elseif ( is_array( $response ) ) {
 			$response = (object) $response;
 		}
 		$data = '';
@@ -136,9 +136,9 @@ class WontrapiHelp {
 		$contact = self::get_object_from_response($contact);
 		if ( isset( $contact->contact_cat ) ) {
 			$contact_tags = $contact->contact_cat;
-			if ($contact_tags) {
-				$contact_tags = array_filter(explode('*/*',$contact_tags));
-				if (in_array($tag, $contact_tags)){
+			if ( $contact_tags ) {
+				$contact_tags = array_filter( explode( '*/*',$contact_tags ) );
+				if ( in_array( $tag, $contact_tags ) ){
 					return true;
 				}
 			}
