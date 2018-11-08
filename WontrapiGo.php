@@ -269,8 +269,8 @@ class WontrapiGo {
 	 * select only the data set you require.
 	 * 
 	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  array $args Array of parameters used to search, sort, etc objects
-	 * @return json   	   Response from Ontraport
+	 * @param  array   $args Array of parameters used to search, sort, etc objects
+	 * @return json   	     Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
 	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
 	 * @author github.com/oakwoodgates 
