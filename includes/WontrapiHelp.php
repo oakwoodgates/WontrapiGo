@@ -57,20 +57,30 @@ class WontrapiHelp {
 	 */
 	public static function get_id_from_response( $response ) {
 		if( is_string( $response ) ) {
-			$response = json_decode( $response );
-		} elseif ( is_array( $response ) ) {
-			$response = (object) $response;
+			$response = json_decode( $response, true );
+		} elseif ( is_object( $response ) ) {
+			$response = (array) $response;
 		}
 		$id = 0;
-		if ( isset( $response->data->id ) ) {
-			return (int) $response->data->id;
-		} elseif ( isset( $response->data->attrs->id ) ) {
-			return (int) $response->data->attrs->id;
-		} elseif ( isset( $response->data->{'0'}->id ) ) {
-			return (int) $response->data->{'0'}->id;
-		} elseif ( isset( $response->id ) ) {
-			return (int) $response->id;
+		if ( isset( $response['data']['id'] ) ) {
+			return (int) $response['data']['id'];
+		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+			return (int) $response['data']['attrs']['id'];
+		} elseif ( isset( $response['data'][0]['id'] ) ) {
+			return (int) $response['data'][0]['id'];
+		} elseif ( isset( $response['data']['ids'][0] ) ) {
+			return  (int) $response['data']['ids'][0];
+		// if response data is passed after get_data_from_response() 
+		} elseif ( isset( $response['id'] ) ) {
+			return (int) $response['id'];
+		} elseif ( isset( $response['attrs']['id'] ) ) {
+			return (int) $response['attrs']['id'];
+		} elseif ( isset( $response[0]['id'] ) ) {
+			return (int) $response[0]['id'];
+		} elseif ( isset( $response['ids'][0] ) ) {
+			return  (int) $response['ids'][0];
 		}
+
 		return (int) $id;
 	}
 
@@ -89,6 +99,7 @@ class WontrapiHelp {
 		} elseif ( is_object( $response ) ) {
 			$response = (array) $response;
 		}
+
 		$ids = array();
 		if ( isset( $response['data']['id'] ) ) {
 			$ids[] = $response['data']['id'];
@@ -98,16 +109,20 @@ class WontrapiHelp {
 			foreach ( $response['data'] as $array ) {
 				$ids[] = $array['id'];
 			}
+		} elseif ( isset( $response['data']['ids'] ) ) {
+			$ids = $response['data']['ids'];
+		// if response data is passed after get_data_from_response() 
 		} elseif ( isset( $response['id'] ) ) {
 			$ids[] = $response['id'];
-		// if response data was passed after get_data_from_response() 
 		} elseif ( isset( $response['attrs']['id'] ) ) {
 			$ids[] = $response['attrs']['id'];
 		} elseif ( isset( $response[0]['id'] ) ) {
 			foreach ( $response as $array ) {
 				$ids[] = $array['id'];
 			}
-		} 
+		} elseif ( isset( $response['ids'] ) ) {
+			$ids = $response['ids'];
+		}
 		return $ids;
 	}
 
@@ -124,8 +139,6 @@ class WontrapiHelp {
 	public static function get_data_from_response( $response, $all = false, $array = true ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, $array );
-	//	} elseif ( is_array( $response ) && ! $array ) {
-	//		$response = (object) $response;
 		} 
 	
 		if ( is_array( $response ) ) {
