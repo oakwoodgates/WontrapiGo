@@ -177,6 +177,8 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * DEPRECIATED
+	 * 
 	 * Get the important stuff from a successfully created, updated, or retrieved request.
 	 * 
 	 * @param  json $response 	JSON response from Ontraport
@@ -186,25 +188,7 @@ class WontrapiHelp {
 	 * @since  0.3.3 Depreciated - Use get_data_from_response()
 	 */
 	public static function get_object_from_response( $response ) {
-		return get_data_from_response( $response );
-		/*
-		if( is_string( $response ) ) {
-			$response = json_decode( $response );
-		} elseif ( is_array( $response ) ) {
-			$response = (object) $response;
-		}
-		$data = '';
-		if ( isset( $response->data->id ) ) {
-			$data = $response->data;
-		} elseif ( isset( $response->data->attrs->id ) ) {
-			$data = $response->data->attrs;
-		} elseif ( isset( $response->data->{'0'}->id ) ) {
-			$data = $response->data->{'0'};
-		} elseif ( isset( $response->id ) ) {
-			$data = $response;
-		}
-		return $data;
-		*/
+		return get_data_from_response( $response, false, false );
 	}
 
 	/**
@@ -241,7 +225,7 @@ class WontrapiHelp {
 	 * @since  0.3.1 Initial
 	 */
 	public static function contact_has_tag( $contact, $tag ) {
-		$contact = self::get_object_from_response($contact);
+		$contact = self::get_data_from_response( $contact );
 		if ( isset( $contact->contact_cat ) ) {
 			$contact_tags = $contact->contact_cat;
 			if ( $contact_tags ) {
