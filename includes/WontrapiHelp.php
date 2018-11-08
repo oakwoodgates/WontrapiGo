@@ -91,7 +91,7 @@ class WontrapiHelp {
 	 * @param  json $response JSON response from Ontraport
 	 * @return array          IDs of the objects
 	 * @author github.com/oakwoodgates 
-	 * @since  0.3.2 Initial
+	 * @since  0.4.0 Initial
 	 */
 	public static function get_ids_from_response( $response ) {
 		if( is_string( $response ) ) {
@@ -134,7 +134,7 @@ class WontrapiHelp {
 	 * @param  bool $array 		To decode as array (true) or object (false)
 	 * @return obj|arr   		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
-	 * @since  0.3.2 Initial
+	 * @since  0.4.0 Initial
 	 */
 	public static function get_data_from_response( $response, $all = false, $array = true ) {
 		if( is_string( $response ) ) {
@@ -197,7 +197,7 @@ class WontrapiHelp {
 	 * @link   https://api.ontraport.com/doc/#criteria Ontraport criteria docs
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
-	 * @since  0.3.2 Utilize SDK
+	 * @since  0.4.0 Utilize SDK
 	 */
 	public static function prepare_search_condition( $field, $operand, $value ) {
 		$condition = new OntraportAPI\Criteria( $field, $operand, $value );
@@ -485,7 +485,7 @@ class WontrapiHelp {
 	 * @return obj|array 		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.1 Initial
-	 * @since  0.3.2 Depreciated - Use get_data_from_response()
+	 * @since  0.4.0 Depreciated - Use get_data_from_response()
 	 */
 	public static function get_object_from_response( $response ) {
 		return get_data_from_response( $response, false, false );
