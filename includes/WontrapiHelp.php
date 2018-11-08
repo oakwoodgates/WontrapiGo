@@ -188,16 +188,19 @@ class WontrapiHelp {
 	 * @link   https://api.ontraport.com/doc/#criteria Ontraport criteria docs
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
+	 * @since  0.3.2 Utilize SDK
 	 */
-	public static function prepare_search_condition( $field, $operand = '=', $value ) {
-
+	public static function prepare_search_condition( $field, $operand, $value ) {
+		$condition = new OntraportAPI\Criteria( $field, $operand, $value );
+		return $condition->fromArray();
+		/*
 		if ( is_numeric ( $value ) ) {
 			$condition = "{$field}{$operand}{$value}";
 		} else {
 			$condition = "{$field}{$operand}'{$value}'";
 		}
-
 		return $condition;
+		*/
 	}
 
 	/**
