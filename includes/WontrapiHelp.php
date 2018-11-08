@@ -46,7 +46,9 @@ class WontrapiHelp {
 
 	/**
 	 * Get the ID of an object (contact, form, etc ) from a successfully
-	 * created, updated, or retrieved request.
+	 * created, updated, or retrieved request. 
+	 * WARNING: If multiple objects passed, this returns the first ID found. 
+	 * To return an array of all ID's in response, use get_ids_from_response()
 	 * 
 	 * @param  json $response JSON response from Ontraport
 	 * @return int            ID of the object
@@ -61,26 +63,131 @@ class WontrapiHelp {
 		}
 		$id = 0;
 		if ( isset( $response->data->id ) ) {
-			$id = $response->data->id;
+			return (int) $response->data->id;
 		} elseif ( isset( $response->data->attrs->id ) ) {
-			$id = $response->data->attrs->id;
-		} elseif ( isset( $response->data[0]->id ) ) {
-			$id = $response->data[0]->id;
+			return (int) $response->data->attrs->id;
+		} elseif ( isset( $response->data->{'0'}->id ) ) {
+			return (int) $response->data->{'0'}->id;
 		} elseif ( isset( $response->id ) ) {
-			$id = $response->id;
+			return (int) $response->id;
 		}
-		return intval( $id );
+		return (int) $id;
+	}
+
+	/**
+	 * Get the IDs of the objects (contact, form, etc ) from a successfully
+	 * created, updated, or retrieved request.
+	 * 
+	 * @param  json $response JSON response from Ontraport
+	 * @return array          IDs of the objects
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.2 Initial
+	 */
+	public static function get_ids_from_response( $response ) {
+		if( is_string( $response ) ) {
+			$response = json_decode( $response, true );
+		} elseif ( is_object( $response ) ) {
+			$response = (array) $response;
+		}
+		$ids = array();
+		if ( isset( $response['data']['id'] ) ) {
+			$ids[] = $response['data']['id'];
+		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+			$ids[] = $response['data']['attrs']['id'];
+		} elseif ( isset( $response['data'][0]['id'] ) ) {
+			foreach ( $response['data'] as $array ) {
+				$ids[] = $array['id'];
+			}
+		} elseif ( isset( $response['id'] ) ) {
+			$ids[] = $response['id'];
+		// if response data was passed after get_data_from_response() 
+		} elseif ( isset( $response['attrs']['id'] ) ) {
+			$ids[] = $response['attrs']['id'];
+		} elseif ( isset( $response[0]['id'] ) ) {
+			foreach ( $response as $array ) {
+				$ids[] = $array['id'];
+			}
+		} 
+		return $ids;
 	}
 
 	/**
 	 * Get the important stuff from a successfully created, updated, or retrieved request.
 	 * 
-	 * @param  json $response JSON response from Ontraport
-	 * @return obj            Object (empty string if no valid response passed)
+	 * @param  json $response 	JSON response from Ontraport
+	 * @param  bool $all 		Return first dataset (false) or all datasets (true)
+	 * @param  bool $array 		To decode as object (false) or array (true)
+	 * @return obj|arr   		Object or array (empty string if no valid response passed)
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.2 Initial
+	 */
+	public static function get_data_from_response( $response, $all = false, $array = false ) {
+		if( is_string( $response ) ) {
+			$response = json_decode( $response, $array );
+	//	} elseif ( is_array( $response ) && ! $array ) {
+	//		$response = (object) $response;
+		} else {
+			return 0;
+		}
+	
+		if ( is_object( $response ) ) {
+			if ( isset( $response->data->id ) ) {
+				return $response->data;
+			} elseif ( isset( $response->data->attrs->id ) ) {
+				return $response->data->attrs;
+			} elseif ( isset( $response->data->{'0'}->id ) ) {
+				if ( $all ) {
+					return $response->data;
+				} else {
+					return $response->data->{'0'};
+				}
+			} elseif ( isset( $response->id ) ) {
+				return $response;
+			} elseif ( isset( $response->data ) ) {
+				if ( is_array( $response->data ) && isset( $response->data[0] ) ) {
+					if ( $all ) {
+						return $response->data;
+					} else { 
+					//	if ( ) {
+						return $response->data[0];
+					//	}
+					}
+				}
+				return $response->data;
+			}
+		} else {
+			if ( isset( $response['data']['id'] ) ) {
+				return $response['data'];
+			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+				return $response['data']['attrs'];
+			} elseif ( isset( $response['data'][0]['id'] ) ) {
+				if ( $all ) {
+					return $response['data'];
+				} else {
+					return $response['data'][0];
+				}
+			} elseif ( isset( $response['id'] ) ) {
+				return $response;
+			} elseif ( isset( $response['data'] ) ) {
+				return $response['data'];
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 * Get the important stuff from a successfully created, updated, or retrieved request.
+	 * 
+	 * @param  json $response 	JSON response from Ontraport
+	 * @return obj|array 		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.1 Initial
+	 * @since  0.3.3 Depreciated - Use get_data_from_response()
 	 */
 	public static function get_object_from_response( $response ) {
+		return get_data_from_response( $response );
+		/*
 		if( is_string( $response ) ) {
 			$response = json_decode( $response );
 		} elseif ( is_array( $response ) ) {
@@ -91,12 +198,13 @@ class WontrapiHelp {
 			$data = $response->data;
 		} elseif ( isset( $response->data->attrs->id ) ) {
 			$data = $response->data->attrs;
-		} elseif ( isset( $response->data[0]->id ) ) {
-			$data = $response->data[0];
+		} elseif ( isset( $response->data->{'0'}->id ) ) {
+			$data = $response->data->{'0'};
 		} elseif ( isset( $response->id ) ) {
 			$data = $response;
 		}
 		return $data;
+		*/
 	}
 
 	/**
@@ -147,31 +255,6 @@ class WontrapiHelp {
 	}
 
 	/**
-	 * Return a JSON response the way you want it
-	 * 
-	 * @param  string $option   How do you want the $response returned?
-	 *                          object|id|json
-	 * @param  json  $response  JSON response from Ontraport
-	 * @return mixed            Object (stdClass), ID (integer), or JSON (string)
-	 * @author github.com/oakwoodgates 
-	 * @since  0.3.0 Initial
-	 */
-	public static function return( $option = 'object', $response ){
-		switch( $option ) {
-			case 'object':
-				return json_decode( $response );
-				break;
-			case 'id':
-				return self::get_id_from_response( $response );
-				break;
-			case 'json':
-			default:
-				return $response;
-				break;
-		}
-	}
-
-	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
@@ -180,6 +263,9 @@ class WontrapiHelp {
 	 * @since  0.1.0
 	 */
 	public static function objectID( $type ) {
+		// return a numeric ID straight away
+		if ( is_numeric( $type ) )
+			return $type;
 		// let's not deal with strangeLetterCasing; lowercase ftw
 		$type = strtolower( $type );
 		// find the objectID
@@ -398,7 +484,7 @@ class WontrapiHelp {
 				$id = 67;
 				break;
 			default:
-				$id = '';
+				$id = 0;
 				break;
 		}
 		return $id;
