@@ -177,21 +177,6 @@ class WontrapiHelp {
 	}
 
 	/**
-	 * DEPRECIATED
-	 * 
-	 * Get the important stuff from a successfully created, updated, or retrieved request.
-	 * 
-	 * @param  json $response 	JSON response from Ontraport
-	 * @return obj|array 		Object or array (empty string if no valid response passed)
-	 * @author github.com/oakwoodgates 
-	 * @since  0.3.1 Initial
-	 * @since  0.3.3 Depreciated - Use get_data_from_response()
-	 */
-	public static function get_object_from_response( $response ) {
-		return get_data_from_response( $response, false, false );
-	}
-
-	/**
 	 * Prepare a simple A JSON encoded string to more specifically set criteria 
 	 * for which contacts to bring back. For example, to check that a field 
 	 * equals a certain value. See criteria examples for more details.
@@ -472,6 +457,26 @@ class WontrapiHelp {
 				break;
 		}
 		return $id;
+	}
+
+
+	/**
+	 * DEPRECIATED
+	 */
+
+	/**
+	 * DEPRECIATED - Use get_data_from_response()
+	 * 
+	 * Get the important stuff from a successfully created, updated, or retrieved request.
+	 * 
+	 * @param  json $response 	JSON response from Ontraport
+	 * @return obj|array 		Object or array (empty string if no valid response passed)
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.1 Initial
+	 * @since  0.3.2 Depreciated - Use get_data_from_response()
+	 */
+	public static function get_object_from_response( $response ) {
+		return get_data_from_response( $response, false, false );
 	}
 
 }
