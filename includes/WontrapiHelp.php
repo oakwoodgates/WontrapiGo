@@ -116,21 +116,35 @@ class WontrapiHelp {
 	 * 
 	 * @param  json $response 	JSON response from Ontraport
 	 * @param  bool $all 		Return first dataset (false) or all datasets (true)
-	 * @param  bool $array 		To decode as object (false) or array (true)
+	 * @param  bool $array 		To decode as array (true) or object (false)
 	 * @return obj|arr   		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.2 Initial
 	 */
-	public static function get_data_from_response( $response, $all = false, $array = false ) {
+	public static function get_data_from_response( $response, $all = false, $array = true ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, $array );
 	//	} elseif ( is_array( $response ) && ! $array ) {
 	//		$response = (object) $response;
-		} else {
-			return 0;
-		}
+		} 
 	
-		if ( is_object( $response ) ) {
+		if ( is_array( $response ) ) {
+			if ( isset( $response['data']['id'] ) ) {
+				return $response['data'];
+			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+				return $response['data']['attrs'];
+			} elseif ( isset( $response['data'][0]['id'] ) ) {
+				if ( $all ) {
+					return $response['data'];
+				} else {
+					return $response['data'][0];
+				}
+			} elseif ( isset( $response['id'] ) ) {
+				return $response;
+			} elseif ( isset( $response['data'] ) ) {
+				return $response['data'];
+			}
+		} else {
 			if ( isset( $response->data->id ) ) {
 				return $response->data;
 			} elseif ( isset( $response->data->attrs->id ) ) {
@@ -148,28 +162,10 @@ class WontrapiHelp {
 					if ( $all ) {
 						return $response->data;
 					} else { 
-					//	if ( ) {
 						return $response->data[0];
-					//	}
 					}
 				}
 				return $response->data;
-			}
-		} else {
-			if ( isset( $response['data']['id'] ) ) {
-				return $response['data'];
-			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
-				return $response['data']['attrs'];
-			} elseif ( isset( $response['data'][0]['id'] ) ) {
-				if ( $all ) {
-					return $response['data'];
-				} else {
-					return $response['data'][0];
-				}
-			} elseif ( isset( $response['id'] ) ) {
-				return $response;
-			} elseif ( isset( $response['data'] ) ) {
-				return $response['data'];
 			}
 		}
 
@@ -214,8 +210,8 @@ class WontrapiHelp {
 	 */
 	public static function contact_has_tag( $contact, $tag ) {
 		$contact = self::get_data_from_response( $contact );
-		if ( isset( $contact->contact_cat ) ) {
-			$contact_tags = $contact->contact_cat;
+		if ( isset( $contact['contact_cat'] ) ) {
+			$contact_tags = $contact['contact_cat'];
 			if ( $contact_tags ) {
 				$contact_tags = array_filter( explode( '*/*',$contact_tags ) );
 				if ( in_array( $tag, $contact_tags ) ){
