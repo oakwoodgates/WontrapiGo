@@ -100,28 +100,31 @@ class WontrapiHelp {
 			$response = (array) $response;
 		}
 
-		$ids = array();
 		if ( isset( $response['data']['id'] ) ) {
-			$ids[] = $response['data']['id'];
+			return $response['data']['id'];
 		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
-			$ids[] = $response['data']['attrs']['id'];
+			return $response['data']['attrs']['id'];
 		} elseif ( isset( $response['data'][0]['id'] ) ) {
+			$ids = array();
 			foreach ( $response['data'] as $array ) {
 				$ids[] = $array['id'];
 			}
+			return $ids;
 		} elseif ( isset( $response['data']['ids'] ) ) {
-			$ids = $response['data']['ids'];
+			return $response['data']['ids'];
 		// if response data is passed after get_data_from_response() 
 		} elseif ( isset( $response['id'] ) ) {
-			$ids[] = $response['id'];
+			return $response['id'];
 		} elseif ( isset( $response['attrs']['id'] ) ) {
-			$ids[] = $response['attrs']['id'];
+			return $response['attrs']['id'];
 		} elseif ( isset( $response[0]['id'] ) ) {
+			$ids = array();
 			foreach ( $response as $array ) {
 				$ids[] = $array['id'];
 			}
+			return $ids;
 		} elseif ( isset( $response['ids'] ) ) {
-			$ids = $response['ids'];
+			return $response['ids'];
 		}
 		return $ids;
 	}
