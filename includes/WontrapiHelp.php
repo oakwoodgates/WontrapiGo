@@ -130,13 +130,13 @@ class WontrapiHelp {
 	 * Get the important stuff from a successfully created, updated, or retrieved request.
 	 * 
 	 * @param  json $response 	JSON response from Ontraport
-	 * @param  bool $all 		Return first dataset (false) or all datasets (true)
+	 * @param  bool $all 		Return all datasets (true) or first dataset (false)
 	 * @param  bool $array 		To decode as array (true) or object (false)
 	 * @return obj|arr   		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial
 	 */
-	public static function get_data_from_response( $response, $all = false, $array = true ) {
+	public static function get_data_from_response( $response, $all = true, $array = true ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, $array );
 		} 
@@ -222,7 +222,7 @@ class WontrapiHelp {
 	 * @since  0.3.1 Initial
 	 */
 	public static function contact_has_tag( $contact, $tag ) {
-		$contact = self::get_data_from_response( $contact );
+		$contact = self::get_data_from_response( $contact, false );
 		if ( isset( $contact['contact_cat'] ) ) {
 			$contact_tags = $contact['contact_cat'];
 			if ( $contact_tags ) {
@@ -244,9 +244,7 @@ class WontrapiHelp {
 	 * @since  0.1.0
 	 */
 	public static function objectID( $type ) {
-		// return a numeric ID straight away
-		if ( is_numeric( $type ) )
-			return $type;
+
 		// let's not deal with strangeLetterCasing; lowercase ftw
 		$type = strtolower( $type );
 		// find the objectID
