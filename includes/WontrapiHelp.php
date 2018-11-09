@@ -473,11 +473,11 @@ class WontrapiHelp {
 
 
 	/**
-	 * DEPRECIATED
+	 * DEPRECATED
 	 */
 
 	/**
-	 * DEPRECIATED - Use get_data_from_response()
+	 * DEPRECATED - Use get_data_from_response()
 	 * 
 	 * Get the important stuff from a successfully created, updated, or retrieved request.
 	 * 
@@ -485,7 +485,7 @@ class WontrapiHelp {
 	 * @return obj|array 		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.1 Initial
-	 * @since  0.4.0 Depreciated - Use get_data_from_response()
+	 * @since  0.4.0 Deprecated - Use get_data_from_response()
 	 */
 	public static function get_object_from_response( $response ) {
 		return get_data_from_response( $response, false, false );
