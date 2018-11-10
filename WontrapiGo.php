@@ -357,7 +357,6 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function get_object_collection_info( $type, $args = array() ) {
-		$args['id'] = $id;
 		$args['objectID'] = self::$help::objectID( $type );
 		return self::connect()->object()->retrieveCollectionInfo( $args );
 	}
