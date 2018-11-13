@@ -51,17 +51,18 @@ class WontrapiHelp {
 	 * To return an array of all ID's in response, use get_ids_from_response()
 	 * 
 	 * @param  json $response JSON response from Ontraport
-	 * @return int            ID of the object
+	 * @return int            ID of the object, or zero
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_id_from_response( $response ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, true );
-		} elseif ( is_object( $response ) ) {
-			$response = (array) $response;
+		} else {
+			// in case decoded response is passed
+			$response = json_decode( json_encode( $response ), true );
 		}
-		$id = 0;
+
 		if ( isset( $response['data']['id'] ) ) {
 			return (int) $response['data']['id'];
 		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
@@ -78,10 +79,10 @@ class WontrapiHelp {
 		} elseif ( isset( $response[0]['id'] ) ) {
 			return (int) $response[0]['id'];
 		} elseif ( isset( $response['ids'][0] ) ) {
-			return  (int) $response['ids'][0];
+			return (int) $response['ids'][0];
 		}
 
-		return (int) $id;
+		return 0;
 	}
 
 	/**
@@ -89,96 +90,96 @@ class WontrapiHelp {
 	 * created, updated, or retrieved request.
 	 * 
 	 * @param  json $response JSON response from Ontraport
-	 * @return array          IDs of the objects
+	 * @return array          Array of IDs of the objects, or empty array
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial
 	 */
 	public static function get_ids_from_response( $response ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, true );
-		} elseif ( is_object( $response ) ) {
-			$response = (array) $response;
+		} else {
+			// in case decoded response is passed
+			$response = json_decode( json_encode( $response ), true );
 		}
 
-		$ids = array();
 		if ( isset( $response['data']['id'] ) ) {
-			$ids[] = $response['data']['id'];
+			return array( $response['data']['id'] );
 		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
-			$ids[] = $response['data']['attrs']['id'];
+			return array( $response['data']['attrs']['id'] );
 		} elseif ( isset( $response['data'][0]['id'] ) ) {
+			$ids = array();
 			foreach ( $response['data'] as $array ) {
 				$ids[] = $array['id'];
 			}
+			return $ids;
 		} elseif ( isset( $response['data']['ids'] ) ) {
-			$ids = $response['data']['ids'];
+			return $response['data']['ids'];
 		// if response data is passed after get_data_from_response() 
 		} elseif ( isset( $response['id'] ) ) {
-			$ids[] = $response['id'];
+			return array( $response['id'] );
 		} elseif ( isset( $response['attrs']['id'] ) ) {
-			$ids[] = $response['attrs']['id'];
+			return array( $response['attrs']['id'] );
 		} elseif ( isset( $response[0]['id'] ) ) {
+			$ids = array();
 			foreach ( $response as $array ) {
 				$ids[] = $array['id'];
 			}
+			return $ids;
 		} elseif ( isset( $response['ids'] ) ) {
-			$ids = $response['ids'];
+			return $response['ids'];
 		}
-		return $ids;
+		return array();
 	}
 
 	/**
 	 * Get the important stuff from a successfully created, updated, or retrieved request.
+	 *
+	 * This function was created because data can be returned different ways depending on
+	 * if we are creating, updating, retrieving a single or multiple contacts, and whether
+	 * we want to deal with multiple returned contacts or if any returned will do.
 	 * 
 	 * @param  json $response 	JSON response from Ontraport
 	 * @param  bool $all 		Return all datasets (true) or first dataset (false)
-	 * @param  bool $array 		To decode as array (true) or object (false)
 	 * @return obj|arr   		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial
 	 */
-	public static function get_data_from_response( $response, $all = true, $array = true ) {
+	public static function get_data_from_response( $response, $all = true ) {
+
 		if( is_string( $response ) ) {
-			$response = json_decode( $response, $array );
-		} 
-	
-		if ( is_array( $response ) ) {
-			if ( isset( $response['data']['id'] ) ) {
-				return $response['data'];
-			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
-				return $response['data']['attrs'];
-			} elseif ( isset( $response['data'][0]['id'] ) ) {
-				if ( $all ) {
-					return $response['data'];
-				} else {
-					return $response['data'][0];
-				}
-			} elseif ( isset( $response['id'] ) ) {
-				return $response;
-			} elseif ( isset( $response['data'] ) ) {
-				return $response['data'];
-			}
+			$response = json_decode( $response, true );
 		} else {
-			if ( isset( $response->data->id ) ) {
-				return $response->data;
-			} elseif ( isset( $response->data->attrs->id ) ) {
-				return $response->data->attrs;
-			} elseif ( isset( $response->data->{'0'}->id ) ) {
-				if ( $all ) {
-					return $response->data;
-				} else {
-					return $response->data->{'0'};
-				}
-			} elseif ( isset( $response->id ) ) {
+			// in case decoded response is passed
+			$response = json_decode( json_encode( $response ), true );
+		}
+
+		if ( !empty( $response['data']['id'] ) ) {
+			return $response['data'];
+
+		} elseif ( !empty( $response['data']['attrs'] ) ) {
+			return $response['data']['attrs'];
+
+		} elseif ( !empty( $response['data'][0] ) ) {
+			if ( $all ) {
+				return $response['data'];
+			} else {
+				return $response['data'][0];
+			}
+
+		} elseif ( !empty( $response['data'] ) ) {
+			return $response['data'];
+
+		} elseif ( !empty( $response['id'] ) ) {
+			return $response;
+
+		} elseif ( !empty( $response['attrs'] ) ) {
+			return $response['attrs'];
+
+		} elseif ( !empty( $response[0] ) ) {
+			if ( $all ) {
 				return $response;
-			} elseif ( isset( $response->data ) ) {
-				if ( is_array( $response->data ) && isset( $response->data[0] ) ) {
-					if ( $all ) {
-						return $response->data;
-					} else { 
-						return $response->data[0];
-					}
-				}
-				return $response->data;
+			} else {
+				return $response[0];
 			}
 		}
 
@@ -480,13 +481,77 @@ class WontrapiHelp {
 	 * Get the important stuff from a successfully created, updated, or retrieved request.
 	 * 
 	 * @param  json $response 	JSON response from Ontraport
+	 * @param  bool $all 		Return all datasets (true) or first dataset (false)
+	 * @param  bool $array 		To decode as array (true) or object (false) via json_decode
 	 * @return obj|array 		Object or array (empty string if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.1 Initial
 	 * @since  0.4.0 Deprecated - Use get_data_from_response()
 	 */
-	public static function get_object_from_response( $response ) {
-		return get_data_from_response( $response, false, false );
+	public static function get_object_from_response( $response, $all = false, $array = false ) {
+		if( is_string( $response ) ) {
+			$response = json_decode( $response, $array );
+		} else {
+			$response = json_decode( json_encode( $response ), $array );
+		}
+		if ( is_array( $response ) ) {
+			if ( isset( $response['data']['id'] ) ) {
+				return $response['data'];
+			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+				return $response['data']['attrs'];
+			} elseif ( isset( $response['data'][0]['id'] ) ) {
+				if ( $all ) {
+					return $response['data'];
+				} else {
+					return $response['data'][0];
+				}
+			} elseif ( isset( $response['id'] ) ) {
+				return $response;
+			} elseif ( isset( $response['data'] ) ) {
+				return $response['data'];
+			} elseif ( isset( $response[0] ) ) {
+				if ( ( is_array( $response[0] ) && isset( $response[0]['id'] ) ) 
+				|| ( is_object( $response[0] ) && isset( $response[0]->id ) ) ) 
+				{
+					if ( $all ) {
+						return $response;
+					} else {
+						return $response[0];
+					}
+				}
+			}
+		} else {
+			if ( isset( $response->data->id ) ) {
+				return $response->data;
+			} elseif ( isset( $response->data->attrs->id ) ) {
+				return $response->data->attrs;
+			} elseif ( isset( $response->data->{'0'}->id ) ) {
+				if ( $all ) {
+					return $response->data;
+				} else {
+					return $response->data->{'0'};
+				}
+			} elseif ( isset( $response->id ) ) {
+				return $response;
+			} elseif ( isset( $response->data ) ) {
+				if ( is_array( $response->data ) && isset( $response->data[0] ) ) {
+					if ( $all ) {
+						return $response->data;
+					} else { 
+						return $response->data[0];
+					}
+				}
+				return $response->data;
+			} elseif ( isset( $response->{'0'}->id ) ) {
+				if ( $all ) {
+					return $response;
+				} else {
+					return $response->{'0'};
+				}
+			}
+		}
+
+		return 0;
 	}
 
 }
