@@ -243,7 +243,7 @@ class WontrapiHelp {
 	 * @return integer       Object's objectID
 	 * @author github.com/oakwoodgates 
 	 * @link   https://api.ontraport.com/live/
-	 * @since  0.1.0
+	 * @since  0.1.0 Initial
 	 */
 	public static function objectID( $type ) {
 

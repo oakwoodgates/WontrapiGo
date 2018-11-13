@@ -92,10 +92,10 @@ class WontrapiGo {
 	/**
 	 * Creates or returns an instance of this class.
 	 *
-	 * @param  string $id        App ID for Ontraport
-	 * @param  string $key       App Key for Ontraport
-	 * @param  string $namespace Namespace for Ontraport SDK
-	 * @return Wontrapi A single instance of this class.
+	 * @param  string $id         App ID for Ontraport
+	 * @param  string $key        App Key for Ontraport
+	 * @param  string $namespace  Namespace for Ontraport SDK
+	 * @return WontrapiGo         A single instance of this class.
 	 * @since  0.1.0	Initial	 
 	 */
 	public static function init( $id, $key, $namespace = 'OntraportAPI' ) {
