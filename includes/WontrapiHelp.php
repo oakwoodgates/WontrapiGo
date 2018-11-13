@@ -246,10 +246,10 @@ class WontrapiHelp {
 	 */
 	public static function objectID( $type ) {
 
-		// let's not deal with strangeLetterCasing; lowercase ftw
 		$type = strtolower( $type );
 		// find the objectID
 		switch( $type ) {
+			case 'automationlogs':
 			case 'automationlogitems':
 				$id = 100;
 				break;
@@ -257,7 +257,11 @@ class WontrapiHelp {
 				$id = 13;
 				break;
 			case 'campaigns':
+			case 'marketingcampaigns':
 				$id = 75;
+				break;
+			case 'campaignbuilders':
+				$id = 140;
 				break;
 			case 'commissions':
 				$id = 38;
@@ -277,10 +281,14 @@ class WontrapiHelp {
 			case 'coupons':
 				$id = 123;
 				break;
+			case 'creditcards':
+				$id = 45;
+				break;
 			case 'customdomains':
 				$id = 58;
 				break;
 			case 'customervalueitems':
+			case 'customervaluereports':
 				$id = 96;
 				break;
 			case 'customobjectrelationships':
@@ -292,12 +300,14 @@ class WontrapiHelp {
 			case 'deletedorders':
 				$id = 146;
 				break;
+			case 'facebooks':
 			case 'facebookapps':
 				$id = 53;
 				break;
 			case 'forms':
 				$id = 122;
 				break;
+			case 'fulfillments':
 			case 'fulfillmentlists':
 				$id = 19;
 				break;
@@ -310,7 +320,7 @@ class WontrapiHelp {
 			case 'imapsettings':
 				$id = 101;
 				break;
-			case 'invoices': // not an actual ontraport type, but when transactions are returned with WontrapiGo::get_object_meta( 'Transactions' ) they are referred to as "Invoice"
+			case 'invoices': // not an actual ontraport type, but when 'transactions' are returned with WontrapiGo::get_object_meta( 'Transactions' ) they are referred to as "Invoice"
 				$id = 46;
 				break;
 			case 'landingpages':
@@ -322,6 +332,7 @@ class WontrapiHelp {
 			case 'leadsources':
 				$id = 76;
 				break;
+			case 'logs':
 			case 'logitems':
 				$id = 4;
 				break;
@@ -347,17 +358,20 @@ class WontrapiHelp {
 				$id = 52;
 				break;
 			case 'partnerproducts':
+			case 'partnerprogramproducts':
 				$id = 87;
 				break;
 			case 'partnerprograms':
 				$id = 35;
 				break;
+			case 'partnerpromotionals':
 			case 'partnerpromotionalitems':
 				$id = 40;
 				break;
 			case 'partners':
 				$id = 36;
 				break;
+			case 'pendingmails':
 			case 'postcardorders':
 				$id = 27;
 				break;
@@ -365,8 +379,10 @@ class WontrapiHelp {
 				$id = 16;
 				break;
 			case 'productsaleslogs':
+			case 'productsaleslogreports':
 				$id = 95;
 				break;
+			case 'purchaselogs':
 			case 'purchasehistorylogs':
 				$id = 30;
 				break;
@@ -382,10 +398,12 @@ class WontrapiHelp {
 			case 'rules':
 				$id = 6;
 				break;
+			case 'salesreports':
 			case 'salesreportitems':
 				$id = 94;
 				break;
 			case 'scheduledbroadcasts':
+			case 'queuedmessages':
 				$id = 23;
 				break;
 			case 'sequences':
@@ -398,24 +416,32 @@ class WontrapiHelp {
 				$id = 47;
 				break;
 			case 'shippingcollecteditems':
+			case 'shippingcollectedreports':
 				$id = 97;
 				break;
 			case 'shippingfulfillmentruns':
+			case 'shippingfulfillments':
 				$id = 49;
 				break;
 			case 'shippingmethods':
 				$id = 64;
 				break;
 			case 'smartforms':
-				$id = 22; // informed guess from https://api.ontraport.com/doc/#retrieve-smartform-meta
+			case 'legacyforms':
+				$id = 22; 
 				break;
 			case 'staffs':
+			case 'users':
 				$id = 2;
 				break;
 			case 'subscriberretentionitems':
+			case 'subscriberretentionreports':
 				$id = 92;
 				break;
 			case 'subscriptionsaleitems':
+			case 'subscriptionsalesitems':
+			case 'subscriptionsalereports':
+			case 'subscriptionsalesreports':
 				$id = 93;
 				break;
 			case 'tags':
@@ -440,6 +466,7 @@ class WontrapiHelp {
 				$id = 63;
 				break;
 			case 'taxescollecteditems':
+			case 'taxreports':
 				$id = 98;
 				break;
 			case 'terms':
