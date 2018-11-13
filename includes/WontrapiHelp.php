@@ -257,6 +257,9 @@ class WontrapiHelp {
 			case 'blasts':
 				$id = 13;
 				break;
+			case 'campaignbuilderitems':
+				$id = 140;
+				break;
 			case 'campaigns':
 				$id = 75;
 				break;
@@ -277,6 +280,9 @@ class WontrapiHelp {
 				break;
 			case 'coupons':
 				$id = 123;
+				break;
+			case 'creditcards':
+				$id = 45;
 				break;
 			case 'customdomains':
 				$id = 58;
@@ -410,7 +416,7 @@ class WontrapiHelp {
 			case 'smartforms':
 				$id = 22; // informed guess from https://api.ontraport.com/doc/#retrieve-smartform-meta
 				break;
-			case 'staffs':
+			case 'staffs': // now 'users'
 				$id = 2;
 				break;
 			case 'subscriberretentionitems':
@@ -457,6 +463,12 @@ class WontrapiHelp {
 				break;
 			case 'urlhistoryitems':
 				$id = 88;
+				break;
+			case 'users':
+				$id = 2;
+				break;
+			case 'webhooks':
+				$id = 145;
 				break;
 			case 'wordpressmemberships':
 				$id = 43;
