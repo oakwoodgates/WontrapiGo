@@ -246,6 +246,8 @@ class WontrapiHelp {
 	 * @since  0.1.0 Initial
 	 */
 	public static function objectID( $type ) {
+		if ( is_integer( $type ) )
+			return $type;
 
 		// let's not deal with strangeLetterCasing; lowercase ftw
 		$type = strtolower( $type );
