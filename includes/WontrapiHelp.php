@@ -285,13 +285,23 @@ class WontrapiHelp {
 	 * Does not actually create the section or fields in OP.
 	 * 
 	 * @param  string $name   Required - the name of the section to be created
-	 * @param  array $fields  Array of fields to be added to the section. Use 
+	 * @param  array $col_1   Array of fields to be added to the section. Use 
 	 *                        prepare_fields function to create the fields.
+	 * @param  array $col_2   Second column of fields
+	 * @param  array $col_3   Third column of fields
 	 * @return object         To be passed to a function to create the section and fields in OP.
 	 * @since  0.4.0 Initial
 	 */
-	public static function prepare_section( $name, $fields ) {
-		$section = new OntraportAPI\Models\FieldEditor\ObjectSection( $name, $fields );
+	public static function prepare_section( $name, $col_1 = array(), $col_2 = array(), $col_3 = array() ) {
+		$section = new OntraportAPI\Models\FieldEditor\ObjectSection( $name, $col_1 );
+		if ( $col_2 ) {
+			$section->putFieldsInColumn( 1, $col_2 );
+
+		}
+		if ( $col_3 ) {
+			$section->putFieldsInColumn( 2, $col_2 );
+		}
+		return $section;
 	}
 
 	/**
