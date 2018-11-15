@@ -237,6 +237,51 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * Creates the markup for a field to be created. 
+	 * Does not actually create the field in OP.
+	 * 
+	 * @param  string  $name     Required - the name (or alias) of the field to be created
+	 * @param  string  $type     The field type. Possible types are:
+	 *                           text (default), check, country, fulldate, list, longtext,
+	 *                           numeric, price, phone, state, drop, email, sms, address
+	 * @return object            To be passed to a function to create the field in OP.
+	 * @since  0.4.0 Initial
+	 */
+	public static function prepare_field( $name, $type = 'text' ) {
+		$field = new OntraportAPI\Models\FieldEditor\ObjectField( $name, $type );
+		return $field; 
+	}
+
+	/**
+	 * Creates the markup for a field options to be created. 
+	 * Does not actually create the field or options in OP.
+	 * 
+	 * @param  string  $field    Required - a prepared field (see prepare_field())
+	 * @param  array   $options  Array of options
+	 * @param  string  $action   Add, remove, or replace options of a drop or list field type.
+	 * @return object            To be passed to a function to create the field in OP.
+	 * @since  0.4.0 Initial
+	 */
+	public static function field_options( $field, $options, $action = 'add' ) {
+
+		switch ( $action ) {
+			case 'add':
+				$field->addDropOptions( $options );
+				break;
+			case 'remove':
+				$field->removeDropOptions( $options );
+				break;
+			case 'replace':
+				$field->replaceDropOptions( $options );
+				break;
+			default:
+				$field->addDropOptions( $options );
+				break;
+		}
+		return $field; 
+	}
+
+	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
