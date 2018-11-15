@@ -238,7 +238,7 @@ class WontrapiGo {
 	 * @return integer|array   	ID's from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
 	 * @author github.com/oakwoodgates 
-	 * @since  0.3.2 Initial        
+	 * @since  0.4.0 Initial        
 	 */
 	public static function get_object_id_by_email( $email, $all = 0, $type = 'contact' ) {
 		$args = array(
@@ -378,6 +378,28 @@ class WontrapiGo {
 		$response = self::get_object_collection_info( $type, $args = array() );
 		$response = json_decode( $response );
 		return intval( $response->data->count );
+	}
+
+	/**
+	 * Retrieve fields from object meta
+	 *
+	 * Retrieves a single meta data field for the specified object.
+	 *
+	 * @param  str $field  Name of field to retrieve 
+	 * @param  int $type   Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return json        Array of fields extracted from response from Ontraport
+	 * @uses   WontrapiGo::get_object_meta()
+	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial 
+	 */
+	public static function get_object_meta_field( $field = '', $type = 0 ) {
+		$response = self::connect()->object()->retrieveFields(array(
+			'objectID' => self::$help::objectID( $type ),
+			'field' => $field
+		) );
+		$response = json_decode( $response, true ); 
+		return $response['data'];
 	}
 
 	/**
@@ -545,7 +567,7 @@ class WontrapiGo {
 	 * @return integer|array   	ID's from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
 	 * @author github.com/oakwoodgates 
-	 * @since  0.3.2 Initial         
+	 * @since  0.4.0 Initial         
 	 */
 	public static function get_contact_id_by_email( $email, $all = 0 ) {
 		return self::get_object_id_by_email( $email, $all, 'contact' );
