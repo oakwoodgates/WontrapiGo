@@ -248,8 +248,7 @@ class WontrapiHelp {
 	 * @since  0.4.0 Initial
 	 */
 	public static function prepare_field( $name, $type = 'text' ) {
-		$field = new OntraportAPI\Models\FieldEditor\ObjectField( $name, $type );
-		return $field; 
+		return new OntraportAPI\Models\FieldEditor\ObjectField( $name, $type ); 
 	}
 
 	/**
@@ -279,6 +278,20 @@ class WontrapiHelp {
 				break;
 		}
 		return $field; 
+	}
+
+	/**
+	 * Creates the markup for a section to be created. 
+	 * Does not actually create the section or fields in OP.
+	 * 
+	 * @param  string $name   Required - the name of the section to be created
+	 * @param  array $fields  Array of fields to be added to the section. Use 
+	 *                        prepare_fields function to create the fields.
+	 * @return object         To be passed to a function to create the section and fields in OP.
+	 * @since  0.4.0 Initial
+	 */
+	public static function prepare_section( $name, $fields ) {
+		$section = new OntraportAPI\Models\FieldEditor\ObjectSection( $name, $fields );
 	}
 
 	/**
