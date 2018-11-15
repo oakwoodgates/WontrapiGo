@@ -399,7 +399,29 @@ class WontrapiGo {
 			'field' => $field
 		) );
 		$response = json_decode( $response, true ); 
-		return $response['data'];
+		return $response;
+	}
+
+	/**
+	 * Retrieve fields from object meta
+	 *
+	 * Retrieves a single meta data field for the specified object.
+	 *
+	 * @param  str $section  Name of section to retrieve 
+	 * @param  int $type   Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return json        Array of fields extracted from response from Ontraport
+	 * @uses   WontrapiGo::get_object_meta()
+	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial 
+	 */
+	public static function get_object_meta_section( $section = '', $type = 0 ) {
+		$response = self::connect()->object()->retrieveFields(array(
+			'objectID' => self::$help::objectID( $type ),
+			'section' => $section
+		) );
+		$response = json_decode( $response, true ); 
+		return $response;
 	}
 
 	/**
