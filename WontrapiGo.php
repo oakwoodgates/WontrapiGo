@@ -160,9 +160,9 @@ class WontrapiGo {
 	 * This endpoint allows duplication. If you want to avoid duplicates,
 	 * you should use - WontrapiGo::create_or_update_object()
 	 * 
-	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  array  $args Parameters depend upon the object. Some may be required.
-	 * @return json   		Response from Ontraport
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array   $args Parameters depend upon the object. Some may be required.
+	 * @return json          Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
@@ -180,9 +180,9 @@ class WontrapiGo {
 	 * supplied or if no existing object has a matching unique field, 
 	 * a new object will be created.
 	 * 
-	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  array  $args Parameters depend upon the object. Some may be required.
-	 * @return json   		Response from Ontraport
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array   $args Parameters depend upon the object. Some may be required.
+	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#create-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
@@ -221,27 +221,27 @@ class WontrapiGo {
 	 * 
 	 * @param  string  $email   Required - Email of object to get
 	 * @param  integer $all     0 for the first ID found, 1 for an array of all matching IDs
-	 * @param  string  $type    Object type. Converts to objectID. Default is Contact.
+	 * @param  str|int $type    Object type. Converts to objectID. Default is Contact.
 	 * @return integer|array   	ID's from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial        
 	 */
-	public static function get_object_id_by_email( $email, $all = 0, $type = 'contact' ) {
+	public static function get_object_id_by_email( $email, $all = 0, $type = 0 ) {
 		$args = array(
 			'objectID' 	=> self::$help::objectID( $type ),
 			'email'		=> $email,
 			'all'		=> (int) $all 
 		);
-		$response = self::connect()->object()->retrieveSingle( $args );
-		$response = json_decode( $response );
+		$response = self::connect()->object()->retrieveIdByEmail( $args );
+		$response = json_decode( $response, true );
 		if ( $all ) {
-			if ( isset( $response->data->ids ) ) {
-				return $response->data->ids;
+			if ( isset( $response['data']['ids'] ) ) {
+				return $response['data']['ids'];
 			}
 		} else {
-			if ( isset( $response->data->id ) ) {
-				return (int) $response->data->id;
+			if ( isset( $response['data']['id'] ) ) {
+				return (int) $response['data']['id'];
 			}
 		}
 
@@ -255,7 +255,7 @@ class WontrapiGo {
 	 * unnecessary API requests by utilizing criteria and our pagination tools to 
 	 * select only the data set you require.
 	 * 
-	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array   $args Array of parameters used to search, sort, etc objects
 	 * @return json   	     Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
@@ -273,16 +273,16 @@ class WontrapiGo {
 	 *
 	 * Retrieves the field meta data for the specified object.
 	 * 
-	 * @param  string $type   Object type (not for Custom Objects). Converts to objectID.
-	 *                        If none is supplied, meta for all objects will be retrieved.
-	 * @param  string $format Indicates whether the list should be indexed by object name or object type ID. 
-	 *                        Possible values: 'byId' | 'byName'
-	 * @return json Response from Ontraport
+	 * @param  str|int $type   Object type (not for Custom Objects). Converts to objectID.
+	 *                         If none is supplied, meta for all objects will be retrieved.
+	 * @param  string  $format Indicates whether the list should be indexed by object name or object type ID. 
+	 *                         Possible values: 'byId' | 'byName'
+	 * @return json            Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	public static function get_object_meta( $type = '', $format = 'byId' ) {
+	public static function get_object_meta( $type = 0, $format = 'byId' ) {
 		$args = array(
 			'objectID' 	=> self::$help::objectID( $type ),
 			'format' => $format
@@ -297,8 +297,8 @@ class WontrapiGo {
 	 * Prepares the result in a way that is ready to be accessed
 	 * independent of object type.
 	 * 
-	 * @param  string $type   Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @return json Response from Ontraport
+	 * @param  str|int $type  Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return json           Response from Ontraport
 	 * @uses   WontrapiGo::get_object_meta()
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
 	 * @author github.com/oakwoodgates 
@@ -316,8 +316,8 @@ class WontrapiGo {
 	 *
 	 * Retrieves the set of meta data fields for the specified object.
 	 * 
-	 * @param  string $type   Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @return json Response from Ontraport
+	 * @param  str|int $type  Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return json           Response from Ontraport
 	 * @uses   WontrapiGo::get_object_meta()
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
 	 * @author github.com/oakwoodgates 
@@ -336,9 +336,9 @@ class WontrapiGo {
 	 * Retrieves information about a collection of objects, 
 	 * such as the number of objects that match the given criteria.
 	 * 
-	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  array  $args Optional - Params for search (see docs)
-	 * @return json   		Response from Ontraport
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array   $args Optional - Params for search (see docs)
+	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
@@ -353,10 +353,10 @@ class WontrapiGo {
 	 *
 	 * Counts the number of objects that match the given criteria.
 	 * 
-	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  array  $args Optional - Params for search (see docs)
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array   $args Optional - Params for search (see docs)
 	 * @uses   WontrapiGo::get_object_collection_info() to retrieve collection from Ontraport
-	 * @return int   		The count
+	 * @return int     The count
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
@@ -372,9 +372,9 @@ class WontrapiGo {
 	 *
 	 * Retrieves a single meta data field for the specified object.
 	 *
-	 * @param  str $field  Name of field to retrieve 
-	 * @param  int $type   Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @return json        Array of fields extracted from response from Ontraport
+	 * @param  string  $field  Name of field to retrieve 
+	 * @param  str|int $type   Object type (not for Custom Objects). Converts to objectID.
+	 * @return json            Array of fields extracted from response from Ontraport
 	 * @uses   WontrapiGo::get_object_meta()
 	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
 	 * @author github.com/oakwoodgates 
@@ -690,7 +690,7 @@ class WontrapiGo {
 	 *
 	 * Adds one or more objects to one or more sequences.
 	 * 
-	 * @param  string $type      Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  str|int $type     Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  string $ids       Required - An array as a comma-delimited list of the IDs of the objects to be added to sequences.
 	 * @param  string $sequences Required - An array as a comma-delimited list of the IDs of the sequence(s) to which objects should be added.
 	 * @param  array  $args      Optional - Params for search (see docs)
@@ -711,7 +711,7 @@ class WontrapiGo {
 	 *
 	 * This endpoint removes one or more objects from one or more sequences.
 	 * 
-	 * @param  string $type      Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  str|int $type     Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  string $ids       Required - An array as a comma-delimited list of the IDs of the objects to be removed from sequence(s).
 	 * @param  string $sequences Required - An array as a comma-delimited list of the IDs of the sequences(s) from which to remove objects.
 	 * @param  array  $args      Optional - Params for search (see docs)
@@ -739,11 +739,11 @@ class WontrapiGo {
 	 *
 	 * Adds one or more tags to one or more objects.
 	 * 
-	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the objects to be tagged.
-	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) which should be added to objects.
-	 * @param  array  $args Optional - Params for search (see docs)
-	 * @return json   		Response from Ontraport
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  string $ids   Required - An array as a comma-delimited list of the IDs of the objects to be tagged.
+	 * @param  string $tags  Required - An array as a comma-delimited list of the IDs of the tag(s) which should be added to objects.
+	 * @param  array  $args  Optional - Params for search (see docs)
+	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#tag-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
@@ -760,11 +760,11 @@ class WontrapiGo {
 	 *
 	 * This endpoint removes one or more tags from one or more objects.
 	 * 
-	 * @param  string $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the objects to remove from tag(s).
-	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) to be removed from objects.
-	 * @param  array  $args Optional - Params for search (see docs)
-	 * @return json   		Response from Ontraport
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  string $ids   Required - An array as a comma-delimited list of the IDs of the objects to remove from tag(s).
+	 * @param  string $tags  Required - An array as a comma-delimited list of the IDs of the tag(s) to be removed from objects.
+	 * @param  array  $args  Optional - Params for search (see docs)
+	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#remove-a-tag-from-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
