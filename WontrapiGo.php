@@ -94,25 +94,23 @@ class WontrapiGo {
 	 *
 	 * @param  string $id         App ID for Ontraport
 	 * @param  string $key        App Key for Ontraport
-	 * @param  string $namespace  Namespace for Ontraport SDK
 	 * @return WontrapiGo         A single instance of this class.
 	 * @since  0.1.0	Initial	 
 	 */
-	public static function init( $id, $key, $namespace = 'OntraportAPI' ) {
+	public static function init( $id, $key ) {
 		if ( null === self::$single_instance ) {
-			self::$single_instance = new self( $id, $key, $namespace );
+			self::$single_instance = new self( $id, $key );
 		}
 
 		return self::$single_instance;
 	}
 
-	protected function __construct( $id, $key, $namespace ) {
+	protected function __construct( $id, $key ) {
 		require( 'includes/WontrapiHelp.php' );
 		require( 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
 		self::$help = WontrapiHelp::init();
 		self::$id = $id;
 		self::$key = $key;
-		self::$namespace = $namespace;
 	}
 
 	/**
@@ -136,16 +134,6 @@ class WontrapiGo {
 	}
 
 	/**
-	 * Set the Namespace for Ontraport SDK
-	 * 
-	 * @param string $id Namespace for Ontraport SDK
-	 * @since  0.1.0
-	 */
-	public static function setNamespace( $namespace ) {
-		self::$namespace = $namespace;
-	}
-
-	/**
 	 * Connect to Ontraport API
 	 * 
 	 * @return [type] [description]
@@ -153,7 +141,6 @@ class WontrapiGo {
 	 */
 	public static function connect() {
 		return new \OntraportAPI\Ontraport( self::$id, self::$key );
-	//	return new self::$namespace . \Ontraport( self::$id, self::$key );
 	}
 
 
