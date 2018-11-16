@@ -5,6 +5,51 @@
 
 ## Changelog
 
+## v0.4.0 
+* Introduced:
+	* ``` get_contact_id_by_email() ```
+	* ``` get_object_id_by_email() ```
+	* ``` get_object_meta_field() ```
+	* ``` get_object_meta_section() ```
+	* ``` create_section() ```
+* Helpers:
+	* ``` prepare_field() ```
+	* ``` field_options() ```
+	* ``` prepare_section() ```
+	* ``` add_col() ```
+* Update:
+	* Ontraport SDK 1.1.1
+* Improve:
+	* Rewrite and bug fix many functions to get ready for production use.
+
+
+## v0.3.3 
+* Introduced:
+	* ``` transaction_process() ```
+
+* Update:
+	* Ontraport SDK 1.0.4
+
+
+## v0.3.1 
+* Helper:
+	* ``` contact_has_tag() ```
+
+## v0.3.0 
+* Introduced:
+	* ``` get_objects() ```
+	* ``` get_contacts() ```
+	* ``` get_contacts_where() ```
+	* ``` get_contacts_by_email() ```
+	* ``` get_transactions() ```
+	* ``` get_transactions_by_contact_id() ```
+* Update:
+	* Ontraport SDK
+* Add:
+	* WontrapiHelp and helper functions for getting and returning data.
+* Improve:
+	* How data is returned.
+
 ## v0.2.0 
 
 * Introduced:
