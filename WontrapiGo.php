@@ -197,7 +197,7 @@ class WontrapiGo {
 	 * 
 	 * Retrieves all the information for an existing object of the specified object type.
 	 * 
-	 * @param  string  $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  integer $id   Required - ID of object to get
 	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-a-single-object OP API Documentation
