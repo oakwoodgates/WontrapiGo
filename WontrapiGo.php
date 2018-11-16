@@ -398,7 +398,6 @@ class WontrapiGo {
 			'objectID' => self::$help::objectID( $type ),
 			'field' => $field
 		) );
-		$response = json_decode( $response, true ); 
 		return $response;
 	}
 
@@ -420,7 +419,6 @@ class WontrapiGo {
 			'objectID' => self::$help::objectID( $type ),
 			'section' => $section
 		) );
-		$response = json_decode( $response, true ); 
 		return $response;
 	}
 
@@ -464,7 +462,6 @@ class WontrapiGo {
 		);
 		return self::connect()->object()->deleteSingle( $args );
 	}
-
 
 	/** 
 	 * ************************************************************
@@ -1234,5 +1231,28 @@ class WontrapiGo {
 		return self::connect()->transaction()->processManual( $args );
 	}
 
+
+	/** 
+	 * ************************************************************
+	 * Fields and Sections 
+	 * ************************************************************
+	 */
+
+	/**
+	 * Create a section and/or add fields to a section.
+	 * 
+	 * @param  Object  $prepared_section  A prepared section object (see WontrapiHelp::prepare_section() and 
+	 *                                    WontrapiHelp::prepare_field())
+	 * @param  int|str $type              ObjectID or name of Object Type to create section in (ex: Contacts)
+	 * @return json                       Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#create-fields-and-sections-in-an-object-record OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial
+	 */
+	public static function create_section( $prepared_section, $type = 0 ) {
+		$params = $prepared_section->toRequestParams();
+		$params['objectID'] = self::$help::objectID( $type );
+		return self::connect()->object()->createFields( $section );
+	}
 
 }
