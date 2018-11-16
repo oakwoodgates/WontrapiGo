@@ -14,30 +14,6 @@
 
 class WontrapiHelp {
 
-	/**
-	 * Singleton instance
-	 *
-	 * @var WontrapiHelp
-	 * @since  0.3.0
-	 */
-	protected static $single_instance = null;
-
-	/**
-	 * Creates or returns an instance of this class.
-	 * 
-	 * @return WontrapiHelp A single instance of this class.
-	 * @since  0.1.0	Initial	 
-	 */
-	public static function init() {
-		if ( null === self::$single_instance ) {
-			self::$single_instance = new self();
-		}
-
-		return self::$single_instance;
-	}
-
-	protected function __construct() {}
-
 	/** 
 	 * ************************************************************
 	 * General helper methods 

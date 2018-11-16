@@ -87,7 +87,7 @@ class WontrapiGo {
 	 * @var class
 	 * @since  0.3.0
 	 */
-	public static $help;
+//	public static $help;
 
 	/**
 	 * Creates or returns an instance of this class.
@@ -108,7 +108,7 @@ class WontrapiGo {
 	protected function __construct( $id, $key ) {
 		require( 'includes/WontrapiHelp.php' );
 		require( 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
-		self::$help = WontrapiHelp::init();
+	//	self::$help = WontrapiHelp::init();
 		self::$id = $id;
 		self::$key = $key;
 	}
@@ -168,7 +168,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function create_object( $type, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->create( $args );
 	}
 
@@ -188,7 +188,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function create_or_update_object( $type, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->saveOrUpdate( $args );
 	}
 
@@ -206,7 +206,7 @@ class WontrapiGo {
 	 */
 	public static function get_object( $type, $id ) {
 		$args = array(
-			'objectID' 	=> self::$help::objectID( $type ),
+			'objectID' 	=> WontrapiHelp::objectID( $type ),
 			'id'		=> $id 
 		);
 		return self::connect()->object()->retrieveSingle( $args );
@@ -229,7 +229,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_id_by_email( $email, $all = 0, $type = 0 ) {
 		$args = array(
-			'objectID' 	=> self::$help::objectID( $type ),
+			'objectID' 	=> WontrapiHelp::objectID( $type ),
 			'email'		=> $email,
 			'all'		=> (int) $all 
 		);
@@ -264,7 +264,7 @@ class WontrapiGo {
 	 * @since  0.3.0 Initial      
 	 */
 	public static function get_objects( $type, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->retrieveMultiple( $args );
 	}
 
@@ -284,7 +284,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta( $type = 0, $format = 'byId' ) {
 		$args = array(
-			'objectID' 	=> self::$help::objectID( $type ),
+			'objectID' 	=> WontrapiHelp::objectID( $type ),
 			'format' => $format
 		);
 		return self::connect()->object()->retrieveMeta( $args );
@@ -307,7 +307,7 @@ class WontrapiGo {
 	public static function get_object_meta_data_object( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
 		$response = json_decode( $response );
-		$number = self::$help::objectID( $type );
+		$number = WontrapiHelp::objectID( $type );
 		return json_encode( $response->data->$number );
 	}
 
@@ -326,7 +326,7 @@ class WontrapiGo {
 	public static function get_object_meta_fields( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
 		$response = json_decode( $response );
-		$number = self::$help::objectID( $type );
+		$number = WontrapiHelp::objectID( $type );
 		return json_encode( $response->data->$number->fields );
 	}
 
@@ -344,7 +344,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function get_object_collection_info( $type, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->retrieveCollectionInfo( $args );
 	}
 
@@ -382,7 +382,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta_field( $field = '', $type = 0 ) {
 		$response = self::connect()->object()->retrieveFields(array(
-			'objectID' => self::$help::objectID( $type ),
+			'objectID' => WontrapiHelp::objectID( $type ),
 			'field' => $field
 		) );
 		return $response;
@@ -403,7 +403,7 @@ class WontrapiGo {
 	 */
 	public static function get_object_meta_section( $section = '', $type = 0 ) {
 		$response = self::connect()->object()->retrieveFields(array(
-			'objectID' => self::$help::objectID( $type ),
+			'objectID' => WontrapiHelp::objectID( $type ),
 			'section' => $section
 		) );
 		return $response;
@@ -426,7 +426,7 @@ class WontrapiGo {
 	 */
 	public static function update_object( $type, $id, $args = array() ) {
 		$args['id'] = $id;
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->update( $args );
 	}
 
@@ -444,7 +444,7 @@ class WontrapiGo {
 	 */
 	public static function delete_object( $type, $id ) {
 		$args = array(
-			'objectID' 	=> self::$help::objectID( $type ),
+			'objectID' 	=> WontrapiHelp::objectID( $type ),
 			'id'		=> $id 
 		);
 		return self::connect()->object()->deleteSingle( $args );
@@ -541,7 +541,7 @@ class WontrapiGo {
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_contacts_where( $field, $operator, $value, $args = array() ) {
-		$args['condition'] = self::$help::prepare_search_condition( $field, $operator, $value );
+		$args['condition'] = WontrapiHelp::prepare_search_condition( $field, $operator, $value );
 		return self::get_contacts( $args );
 	}
 
@@ -641,7 +641,7 @@ class WontrapiGo {
 	public static function get_contact_object_meta_fields() {
 		$response = self::get_contact_object_meta();
 		$response = json_decode( $response );
-		$number = self::$help::objectID( 'Contacts' );
+		$number = WontrapiHelp::objectID( 'Contacts' );
 		return json_encode( $response->data->$number->fields );
 	}
 
@@ -700,7 +700,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function add_object_to_sequence( $type, $ids, $sequences, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $sequences;
 		return self::connect()->object()->addToSequence( $args );
@@ -721,7 +721,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function remove_object_from_sequence( $type, $ids, $sequences, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $sequences;
 		return self::connect()->object()->removeFromSequence( $args );
@@ -749,7 +749,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function add_tag_to_object( $type, $ids, $tags, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $tags;
 		return self::connect()->object()->addTag( $args );
@@ -770,7 +770,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function remove_tag_from_object( $type, $ids, $tags, $args = array() ) {
-		$args['objectID'] = self::$help::objectID( $type );
+		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $tags;
 		return self::connect()->object()->removeTag( $args );
@@ -903,7 +903,7 @@ class WontrapiGo {
 	public static function get_smartform_object_meta_fields() {
 		$response = self::get_smartform_object_meta();
 		$response = json_decode( $response );
-		$number = self::$help::objectID( 'smartforms' );
+		$number = WontrapiHelp::objectID( 'smartforms' );
 		return json_encode( $response->data->$number->fields );
 	}
 
@@ -975,7 +975,7 @@ class WontrapiGo {
 	public static function get_landingpage_object_meta_fields() {
 		$response = self::get_landingpage_object_meta();
 		$response = json_decode( $response );
-		$number = self::$help::objectID( 'landingpages' );
+		$number = WontrapiHelp::objectID( 'landingpages' );
 		return json_encode( $response->data->$number->fields );
 	}
 
@@ -1079,7 +1079,7 @@ class WontrapiGo {
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_transactions_by_contact_id( $contact_id, $args = array() ) {
-		$args['condition'] = self::$help::prepare_search_condition( 'contact_id', '=', $contact_id );
+		$args['condition'] = WontrapiHelp::prepare_search_condition( 'contact_id', '=', $contact_id );
 		return self::get_transactions( $args );
 	}
 
@@ -1127,7 +1127,7 @@ class WontrapiGo {
 	public static function get_transaction_object_meta_fields() {
 		$response = self::get_transaction_object_meta();
 		$response = json_decode( $response );
-		$number = self::$help::objectID( 'transactions' );
+		$number = WontrapiHelp::objectID( 'transactions' );
 		return json_encode( $response->data->$number->fields );
 	}
 
@@ -1238,7 +1238,7 @@ class WontrapiGo {
 	 */
 	public static function create_section( $prepared_section, $type = 0 ) {
 		$params = $prepared_section->toRequestParams();
-		$params['objectID'] = self::$help::objectID( $type );
+		$params['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->createFields( $section );
 	}
 
