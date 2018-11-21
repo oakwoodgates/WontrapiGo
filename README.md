@@ -13,6 +13,8 @@
 	* ``` get_object_meta_section() ```
 	* ``` create_section() ```
 * Helpers:
+	* ``` get_ids_from_response() ```
+	* ``` get_data_from_response() ```
 	* ``` prepare_field() ```
 	* ``` field_options() ```
 	* ``` prepare_section() ```
@@ -43,6 +45,12 @@
 	* ``` get_contacts_by_email() ```
 	* ``` get_transactions() ```
 	* ``` get_transactions_by_contact_id() ```
+* Helpers:
+	* ``` get_id_from_response() ```
+	* ``` prepare_search_condition() ```
+	* ``` prepare_search_condition() ```
+	* ``` prepare_search_condition() ```
+	* ``` prepare_search_condition() ```
 * Update:
 	* Ontraport SDK
 * Add:
@@ -102,6 +110,8 @@
 	* ``` get_smartform_object_meta() ```
 	* ``` get_smartform_object_meta_fields() ```
 	* ``` get_smartform_html() ```
+* Helpers:
+	* ``` objectID() ```
 * Methods for setting app id, etc
 * Connect to Ontraport
 * Include [Ontraport's PHP SDK](https://github.com/Ontraport/SDK-PHP) 
