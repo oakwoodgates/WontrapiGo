@@ -256,8 +256,8 @@ class WontrapiHelp {
 	 * Does not actually create the section or fields in OP.
 	 * 
 	 * @param  string $name   Required - the name of the section to be created
-	 * @param  array $col_1   Array of fields to be added to the section. Use 
-	 *                        prepare_field() function to create the fields.
+	 * @param  array $col_1   Array of fields objects to be added to the section.  
+	 *                        Use prepare_field() function to create the fields.
 	 * @param  array $col_2   Second column of fields
 	 * @param  array $col_3   Third column of fields
 	 * @return object         To be passed to a function to create the section and fields in OP.
@@ -280,7 +280,15 @@ class WontrapiHelp {
 		return $section;
 	}
 
-	public static function add_col( $section, $field, $col ) {
+	/**
+	 * Puts fields into a column to be used within a section
+	 * @param object $section 	A prepared section object (see prepare_section())
+	 * @param object $field 	A prepared field object (see prepare_field())
+	 * @param int    $col 		The column to add (1, 2, or 3)
+	 * @return obj 				A section object
+	 * @since  0.4.0 Initial
+	 */
+	public static function add_col( $section, $field, $col = 1 ) {
 		$col = $col - 1;
 		$section->putFieldsInColumn( $col, $field );
 		return $section;
