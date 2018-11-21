@@ -26,18 +26,15 @@ class WontrapiHelp {
 	 * WARNING: If multiple objects passed, this returns the first ID found. 
 	 * To return an array of all ID's in response, use get_ids_from_response()
 	 * 
-	 * @param  json $response JSON response from Ontraport
-	 * @return int            ID of the object, or zero
+	 * @param  json|arr $response 	JSON response from Ontraport
+	 * @return int 					ID of the object, or zero
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
 	public static function get_id_from_response( $response ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, true );
-		} else {
-			// in case decoded response is passed
-			$response = json_decode( json_encode( $response ), true );
-		}
+		} 
 
 		if ( isset( $response['data']['id'] ) ) {
 			return (int) $response['data']['id'];
@@ -46,7 +43,7 @@ class WontrapiHelp {
 		} elseif ( isset( $response['data'][0]['id'] ) ) {
 			return (int) $response['data'][0]['id'];
 		} elseif ( isset( $response['data']['ids'][0] ) ) {
-			return  (int) $response['data']['ids'][0];
+			return (int) $response['data']['ids'][0];
 		// if response data is passed after get_data_from_response() 
 		} elseif ( isset( $response['id'] ) ) {
 			return (int) $response['id'];
@@ -65,18 +62,15 @@ class WontrapiHelp {
 	 * Get the IDs of the objects (contact, form, etc ) from a successfully
 	 * created, updated, or retrieved request.
 	 * 
-	 * @param  json $response JSON response from Ontraport
-	 * @return array          Array of IDs of the objects, or empty array
+	 * @param  json|arr $response 	JSON response from Ontraport
+	 * @return array          		Array of IDs of the objects, or empty array
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial
 	 */
 	public static function get_ids_from_response( $response ) {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, true );
-		} else {
-			// in case decoded response is passed
-			$response = json_decode( json_encode( $response ), true );
-		}
+		} 
 
 		if ( isset( $response['data']['id'] ) ) {
 			return array( $response['data']['id'] );
@@ -114,9 +108,9 @@ class WontrapiHelp {
 	 * if we are creating, updating, retrieving a single or multiple contacts, and whether
 	 * we want to deal with multiple returned contacts or if any returned will do.
 	 * 
-	 * @param  json $response 	JSON response from Ontraport
-	 * @param  bool $all 		Return all datasets (true) or first dataset (false)
-	 * @return obj|arr   		Object or array (empty string if no valid response passed)
+	 * @param  json|arr $response 	JSON response from Ontraport
+	 * @param  bool 	$all 		Return all datasets (true) or first dataset (false)
+	 * @return arr|false   			Array (false if no valid response passed)
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial
 	 */
@@ -124,33 +118,34 @@ class WontrapiHelp {
 
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, true );
-		} else {
-			// in case decoded response is passed
-			$response = json_decode( json_encode( $response ), true );
-		}
+		} 
 
+		// return typical response from popular objects first (contact & transactions) 
 		if ( !empty( $response['data']['id'] ) ) {
 			return $response['data'];
-
+		// from updating a contact or object
 		} elseif ( !empty( $response['data']['attrs'] ) ) {
 			return $response['data']['attrs'];
-
+		// multiple contacts or objects
 		} elseif ( !empty( $response['data'][0] ) ) {
 			if ( $all ) {
 				return $response['data'];
 			} else {
 				return $response['data'][0];
 			}
-
+		// might not be formatted like contact object
 		} elseif ( !empty( $response['data'] ) ) {
 			return $response['data'];
 
+		// if response data is passed after get_data_from_response() 
+
+		// typical response from popular objects
 		} elseif ( !empty( $response['id'] ) ) {
 			return $response;
-
+		// from updating a contact or object
 		} elseif ( !empty( $response['attrs'] ) ) {
 			return $response['attrs'];
-
+		// multiple contacts or objects
 		} elseif ( !empty( $response[0] ) ) {
 			if ( $all ) {
 				return $response;
@@ -158,7 +153,7 @@ class WontrapiHelp {
 				return $response[0];
 			}
 		}
-
+		// return a false response if nothing found
 		return 0;
 	}
 
