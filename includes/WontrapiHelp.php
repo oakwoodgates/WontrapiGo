@@ -295,6 +295,31 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * Get count from, or count objects in a response
+	 * @param  str|arr  $data JSON response or decoded array from response
+	 * @return int 		The value of the count key or a count of objects in a response
+	 * @since  0.5.0 	Initial
+	 */
+	public static function get_count( $data ) {
+		$count = 0;
+		$data = self::get_data_from_response( $data );
+
+		if ( !$data )
+			return $count;
+
+		if ( isset( $data['count'] ) ) {
+			return $data['count'];
+		}
+
+		if ( !empty( $data[0] ) ) {
+			foreach ( $data as $obj ) {
+				$count++;
+			}
+		}
+		return $count;
+	}
+
+	/**
 	 * Get objectID for type
 	 * 
 	 * @param  string  $type Type of object
