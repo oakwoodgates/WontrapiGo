@@ -110,7 +110,7 @@ class WontrapiHelp {
 	 * 
 	 * @param  json|arr $response 	JSON response from Ontraport
 	 * @param  bool 	$all 		Return all datasets (true) or first dataset (false)
-	 * @return arr|false   			Array (false if no valid response passed)
+	 * @return arr    				Array 
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial
 	 */
@@ -153,8 +153,8 @@ class WontrapiHelp {
 				return $response[0];
 			}
 		}
-		// return a false response if nothing found
-		return 0;
+
+		return $response;
 	}
 
 	/**
