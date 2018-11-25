@@ -820,6 +820,21 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple forms
+	 * 
+	 * @param  array  $ids  An integer array as a comma-delimited list of the IDs of the forms to retrieve. Entering a value of 0 will result in all forms being selected
+	 * @param  array  $args Array of optional args
+	 * @return json       Response from OP
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-forms OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial
+	 */
+	public static function get_forms( $ids = array(), $args = array() ) {
+		$args['ids'] = $ids;
+		return self::connect()->form()->retrieveMultiple( $args );
+	}
+
+	/**
 	 * Retrieve form collection info
 	 *
 	 * Retrieves information about a collection of forms, such as the number of forms that match the given criteria.
