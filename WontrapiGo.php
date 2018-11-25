@@ -74,22 +74,6 @@ class WontrapiGo {
 	public static $key = '';
 
 	/**
-	 * Namespace for Ontraport SDK
-	 *
-	 * @var string
-	 * @since  0.1.0
-	 */
-	public static $namespace = 'OntraportAPI';
-
-	/**
-	 * WontrapiHelp
-	 *
-	 * @var class
-	 * @since  0.3.0
-	 */
-//	public static $help;
-
-	/**
 	 * Creates or returns an instance of this class.
 	 *
 	 * @param  string $id         App ID for Ontraport
@@ -108,7 +92,6 @@ class WontrapiGo {
 	protected function __construct( $id, $key ) {
 		require( 'includes/WontrapiHelp.php' );
 		require( 'vendor/Ontraport/SDK-PHP/src/Ontraport.php' );
-	//	self::$help = WontrapiHelp::init();
 		self::$id = $id;
 		self::$key = $key;
 	}
@@ -298,19 +281,22 @@ class WontrapiGo {
 	 * independent of object type.
 	 * 
 	 * @param  str|int $type  Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @return json           Response from Ontraport
+	 * @return array          Decoded response from Ontraport
 	 * @uses   WontrapiGo::get_object_meta()
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	public static function get_object_meta_data_object( $type ) {
-		$response = self::get_object_meta( $type, 'byId' );
-		$response = json_decode( $response );
+/*	public static function get_object_meta_data_object( $type ) {
 		$number = WontrapiHelp::objectID( $type );
-		return json_encode( $response->data->$number );
+		$response = self::get_object_meta( $number, 'byId' );
+		$response = json_decode( $response, true );
+		if ( isset( $response['data'][$number] ) ) {
+			return json_encode( $response['data'][$number] );
+		}
+		return '';
 	}
-
+*/
 	/**
 	 * Retrieve fields from object meta
 	 *
@@ -323,13 +309,13 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	public static function get_object_meta_fields( $type ) {
+/*	public static function get_object_meta_fields( $type ) {
 		$response = self::get_object_meta( $type, 'byId' );
 		$response = json_decode( $response );
 		$number = WontrapiHelp::objectID( $type );
 		return json_encode( $response->data->$number->fields );
 	}
-
+*/
 	/**
 	 * Retrieve object collection info
 	 *
@@ -356,17 +342,17 @@ class WontrapiGo {
 	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  array   $args Optional - Params for search (see docs)
 	 * @uses   WontrapiGo::get_object_collection_info() to retrieve collection from Ontraport
+	 * @uses   WontrapiHelp::get_count() to get the count
 	 * @return int     The count
 	 * @link   https://api.ontraport.com/doc/#retrieve-object-collection-info OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function count_objects( $type, $args = array() ) {
-		$response = self::get_object_collection_info( $type, $args = array() );
-		$response = json_decode( $response );
-		return intval( $response->data->count );
+/*	public static function count_objects( $type, $args = array() ) {
+		$response = self::get_object_collection_info( $type, $args );
+		return WontrapiHelp::get_count( $response );
 	}
-
+*/
 	/**
 	 * Retrieve fields from object meta
 	 *
