@@ -590,7 +590,7 @@ class WontrapiHelp {
 				$id = 67;
 				break;
 			default:
-				$id = 0;
+				$id = '';
 				break;
 		}
 		return $id;
