@@ -35,16 +35,17 @@ class WontrapiHelp {
 		if( is_string( $response ) ) {
 			$response = json_decode( $response, true );
 		} 
+		if ( isset( $response['data'] ) ) {
 
-		if ( isset( $response['data']['id'] ) ) {
-			return (int) $response['data']['id'];
-		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
-			return (int) $response['data']['attrs']['id'];
-		} elseif ( isset( $response['data'][0]['id'] ) ) {
-			return (int) $response['data'][0]['id'];
-		} elseif ( isset( $response['data']['ids'][0] ) ) {
-			return (int) $response['data']['ids'][0];
-		// if response data is passed after get_data_from_response() 
+			if ( isset( $response['data']['id'] ) ) {
+				return (int) $response['data']['id'];
+			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+				return (int) $response['data']['attrs']['id'];
+			} elseif ( isset( $response['data'][0]['id'] ) ) {
+				return (int) $response['data'][0]['id'];
+			} elseif ( isset( $response['data']['ids'][0] ) ) {
+				return (int) $response['data']['ids'][0];
+			}
 		} elseif ( isset( $response['id'] ) ) {
 			return (int) $response['id'];
 		} elseif ( isset( $response['attrs']['id'] ) ) {
@@ -72,19 +73,20 @@ class WontrapiHelp {
 			$response = json_decode( $response, true );
 		} 
 
-		if ( isset( $response['data']['id'] ) ) {
-			return array( $response['data']['id'] );
-		} elseif ( isset( $response['data']['attrs']['id'] ) ) {
-			return array( $response['data']['attrs']['id'] );
-		} elseif ( isset( $response['data'][0]['id'] ) ) {
-			$ids = array();
-			foreach ( $response['data'] as $array ) {
-				$ids[] = $array['id'];
-			}
-			return $ids;
-		} elseif ( isset( $response['data']['ids'] ) ) {
-			return $response['data']['ids'];
-		// if response data is passed after get_data_from_response() 
+		if ( isset( $response['data'] ) ) {
+			if ( isset( $response['data']['id'] ) ) {
+				return array( $response['data']['id'] );
+			} elseif ( isset( $response['data']['attrs']['id'] ) ) {
+				return array( $response['data']['attrs']['id'] );
+			} elseif ( isset( $response['data'][0]['id'] ) ) {
+				$ids = array();
+				foreach ( $response['data'] as $array ) {
+					$ids[] = $array['id'];
+				}
+				return $ids;
+			} elseif ( isset( $response['data']['ids'] ) ) {
+				return $response['data']['ids'];
+			}	
 		} elseif ( isset( $response['id'] ) ) {
 			return array( $response['id'] );
 		} elseif ( isset( $response['attrs']['id'] ) ) {
@@ -98,6 +100,7 @@ class WontrapiHelp {
 		} elseif ( isset( $response['ids'] ) ) {
 			return $response['ids'];
 		}
+
 		return array();
 	}
 
@@ -106,7 +109,7 @@ class WontrapiHelp {
 	 *
 	 * This function was created because data can be returned different ways depending on
 	 * if we are creating, updating, retrieving a single or multiple contacts, and whether
-	 * we want to deal with multiple returned contacts or if any returned will do.
+	 * we want to deal with multiple returned contacts or if first found will do.
 	 * 
 	 * @param  json|arr $response 	JSON response from Ontraport
 	 * @param  bool 	$all 		Return all datasets (true) or first dataset (false)
@@ -116,45 +119,44 @@ class WontrapiHelp {
 	 */
 	public static function get_data_from_response( $response, $all = true ) {
 
-		if( is_string( $response ) ) {
+		if ( is_string( $response ) ) {
 			$response = json_decode( $response, true );
 		} 
 
-		// return typical response from popular objects first (contact & transactions) 
-		if ( !empty( $response['data']['id'] ) ) {
-			return $response['data'];
-		// from updating a contact or object
-		} elseif ( !empty( $response['data']['attrs'] ) ) {
-			return $response['data']['attrs'];
-		// multiple contacts or objects
-		} elseif ( !empty( $response['data'][0] ) ) {
-			if ( $all ) {
-				return $response['data'];
+		if ( !empty( $response['data'] ) ) {
+			$data = $response['data'];
+			// return typical response from popular objects first (contact & transactions) 
+			if ( !empty( $data['id'] ) ) {
+				return $data;
+			// from updating a contact or object
+			} elseif ( !empty( $data['attrs'] ) ) {
+				return $data['attrs'];
+			} elseif ( is_array( $data ) ) {
+				if ( is_numeric( key( $data ) ) ) {
+					if ( !empty( $data[0]['id'] ) || !empty( $data[0]['form_id'] ) ) {
+						// multiple contacts or objects
+						if ( $all ) {
+							return $data;
+						} else {
+							return $data[0];
+						}
+					} else {
+						// from retrieve object meta
+						return reset( $data );						
+					}
+			//	} elseif ( isset( $data['ids'] ) ) {
+			//		return $data['ids'];
+				} else {
+					// not formatted like popular objects, or from creating fields and sections
+					return $data;
+				}
 			} else {
-				return $response['data'][0];
+				// we have a string response
+				return $data;
 			}
-		// might not be formatted like contact object
-		} elseif ( !empty( $response['data'] ) ) {
-			return $response['data'];
-
-		// if response data is passed after get_data_from_response() 
-
-		// typical response from popular objects
-		} elseif ( !empty( $response['id'] ) ) {
-			return $response;
-		// from updating a contact or object
-		} elseif ( !empty( $response['attrs'] ) ) {
-			return $response['attrs'];
-		// multiple contacts or objects
-		} elseif ( !empty( $response[0] ) ) {
-			if ( $all ) {
-				return $response;
-			} else {
-				return $response[0];
-			}
+		} else {
+			return 0;
 		}
-
-		return $response;
 	}
 
 	/**
@@ -295,7 +297,10 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * Count objects
+	 * 
 	 * Get count from, or count objects in a response
+	 * 
 	 * @param  str|arr  $data JSON response or decoded array from response
 	 * @return int 		The value of the count key or a count of objects in a response
 	 * @since  0.5.0 	Initial
@@ -311,12 +316,35 @@ class WontrapiHelp {
 			return $data['count'];
 		}
 
-		if ( !empty( $data[0] ) ) {
+		if ( !empty( $data ) ) {
 			foreach ( $data as $obj ) {
 				$count++;
 			}
-		}
+		} 
 		return $count;
+	}
+
+	/**
+	 * Get array of data from object meta response
+	 *
+	 * Retrieves the set of meta data for the specified object.
+	 * Prepares the result in a way that is ready to be accessed
+	 * independent of object type.
+	 * 
+	 * @param  str|int $type  Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @return array          Array of meta
+	 * @uses   WontrapiGo::get_object_meta()
+	 * @link   https://api.ontraport.com/doc/#retrieve-object-meta OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial 
+	 */
+	public static function get_objects_meta( $type, $response ) {
+		$number = WontrapiHelp::objectID( $type );
+		$response = WontrapiHelp::get_data_from_response( $response );
+		if ( isset( $response[$number] ) ) {
+			return $response[$number];
+		}
+		return array();
 	}
 
 	/**
