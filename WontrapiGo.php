@@ -196,6 +196,27 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple objects
+	 * 
+	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
+	 * unnecessary API requests by utilizing criteria and our pagination tools to 
+	 * select only the data set you require.
+	 * 
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array   $args Array of parameters used to search, sort, etc objects
+	 * @return json   	     Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @link   https://api.ontraport.com/doc/#pagination Max results returned is 50; may need pagination
+	 * @author github.com/oakwoodgates 
+	 * @since  0.3.0 Initial      
+	 */
+	public static function get_objects( $type, $args = array() ) {
+		$args['objectID'] = WontrapiHelp::objectID( $type );
+		return self::connect()->object()->retrieveMultiple( $args );
+	}
+
+	/**
 	 * Get an object ID by associated email
 	 * 
 	 * Retrieves the IDs of contact objects or custom objects by their email fields. 
@@ -229,26 +250,6 @@ class WontrapiGo {
 		}
 
 		return ( $all ) ? 0 : array();
-	}
-
-	/**
-	 * Retrieve multiple objects
-	 * 
-	 * Retrieves a collection of contacts based on a set of parameters. You can limit 
-	 * unnecessary API requests by utilizing criteria and our pagination tools to 
-	 * select only the data set you require.
-	 * 
-	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  array   $args Array of parameters used to search, sort, etc objects
-	 * @return json   	     Response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
-	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
-	 * @author github.com/oakwoodgates 
-	 * @since  0.3.0 Initial      
-	 */
-	public static function get_objects( $type, $args = array() ) {
-		$args['objectID'] = WontrapiHelp::objectID( $type );
-		return self::connect()->object()->retrieveMultiple( $args );
 	}
 
 	/**
