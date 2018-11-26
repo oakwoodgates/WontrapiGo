@@ -314,46 +314,6 @@ class WontrapiGo {
 	}
 
 	/**
-	 * Retrieve fields from object meta
-	 *
-	 * Retrieves a single meta data field for the specified object.
-	 *
-	 * @param  string  $field  Name of field to retrieve, leave blank for all fields 
-	 * @param  str|int $type   Object type (not for Custom Objects). Converts to objectID.
-	 * @return json            Array of fields extracted from response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.4.0 Initial 
-	 */
-	public static function get_object_meta_field( $field = '', $type = 0 ) {
-		$response = self::connect()->object()->retrieveFields(array(
-			'objectID' => WontrapiHelp::objectID( $type ),
-			'field' => $field
-		) );
-		return $response;
-	}
-
-	/**
-	 * Retrieve fields from object meta
-	 *
-	 * Retrieves a single meta data field for the specified object.
-	 *
-	 * @param  str     $section  Name of section to retrieve, leave blank for all fields 
-	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID.
-	 * @return json              Array of fields extracted from response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.4.0 Initial 
-	 */
-	public static function get_object_meta_section( $section = '', $type = 0 ) {
-		$response = self::connect()->object()->retrieveFields(array(
-			'objectID' => WontrapiHelp::objectID( $type ),
-			'section' => $section
-		) );
-		return $response;
-	}
-
-	/**
 	 * Update an object’s data
 	 *
 	 * Updates an existing object with given data. The object type 
@@ -393,6 +353,71 @@ class WontrapiGo {
 		);
 		return self::connect()->object()->deleteSingle( $args );
 	}
+
+
+	/** 
+	 * ************************************************************
+	 * Fields and Sections 
+	 * ************************************************************
+	 */
+
+	/**
+	 * Create a section and/or add fields to a section.
+	 * 
+	 * @param  Object  $prepared_section  A prepared section object (see WontrapiHelp::prepare_section() and 
+	 *                                    WontrapiHelp::prepare_field())
+	 * @param  int|str $type              ObjectID or name of Object Type to create section in (ex: Contacts)
+	 * @return json                       Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#create-fields-and-sections-in-an-object-record OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial
+	 */
+	public static function create_section( $prepared_section, $type = 0 ) {
+		$params = $prepared_section->toRequestParams();
+		$params['objectID'] = WontrapiHelp::objectID( $type );
+		return self::connect()->object()->createFields( $section );
+	}
+
+	/**
+	 * Retrieve fields from object meta
+	 *
+	 * Retrieves a single meta data field for the specified object.
+	 *
+	 * @param  string  $field  Name of field to retrieve, leave blank for all fields 
+	 * @param  str|int $type   Object type (not for Custom Objects). Converts to objectID.
+	 * @return json            Array of fields extracted from response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial 
+	 */
+	public static function get_field( $field = '', $type = 0 ) {
+		$response = self::connect()->object()->retrieveFields(array(
+			'objectID' => WontrapiHelp::objectID( $type ),
+			'field' => $field
+		) );
+		return $response;
+	}
+
+	/**
+	 * Retrieve fields from object meta
+	 *
+	 * Retrieves a single meta data field for the specified object.
+	 *
+	 * @param  str     $section  Name of section to retrieve, leave blank for all fields 
+	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID.
+	 * @return json              Array of fields extracted from response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.4.0 Initial 
+	 */
+	public static function get_section( $section = '', $type = 0 ) {
+		$response = self::connect()->object()->retrieveFields(array(
+			'objectID' => WontrapiHelp::objectID( $type ),
+			'section' => $section
+		) );
+		return $response;
+	}
+
 
 	/** 
 	 * ************************************************************
@@ -1175,30 +1200,6 @@ class WontrapiGo {
 		$args['offer'] = $offer;
 
 		return self::connect()->transaction()->processManual( $args );
-	}
-
-
-	/** 
-	 * ************************************************************
-	 * Fields and Sections 
-	 * ************************************************************
-	 */
-
-	/**
-	 * Create a section and/or add fields to a section.
-	 * 
-	 * @param  Object  $prepared_section  A prepared section object (see WontrapiHelp::prepare_section() and 
-	 *                                    WontrapiHelp::prepare_field())
-	 * @param  int|str $type              ObjectID or name of Object Type to create section in (ex: Contacts)
-	 * @return json                       Response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#create-fields-and-sections-in-an-object-record OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.4.0 Initial
-	 */
-	public static function create_section( $prepared_section, $type = 0 ) {
-		$params = $prepared_section->toRequestParams();
-		$params['objectID'] = WontrapiHelp::objectID( $type );
-		return self::connect()->object()->createFields( $section );
 	}
 
 }
