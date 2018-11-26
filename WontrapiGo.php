@@ -265,7 +265,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial 
 	 */
-	public static function get_object_meta( $type = 0, $format = 'byId' ) {
+	public static function get_object_meta( $type = '', $format = 'byId' ) {
 		$args = array(
 			'objectID' 	=> WontrapiHelp::objectID( $type ),
 			'format' => $format
@@ -358,10 +358,9 @@ class WontrapiGo {
 	 *
 	 * Retrieves a single meta data field for the specified object.
 	 *
-	 * @param  string  $field  Name of field to retrieve 
+	 * @param  string  $field  Name of field to retrieve, leave blank for all fields 
 	 * @param  str|int $type   Object type (not for Custom Objects). Converts to objectID.
 	 * @return json            Array of fields extracted from response from Ontraport
-	 * @uses   WontrapiGo::get_object_meta()
 	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial 
@@ -379,10 +378,9 @@ class WontrapiGo {
 	 *
 	 * Retrieves a single meta data field for the specified object.
 	 *
-	 * @param  str $section  Name of section to retrieve 
-	 * @param  int $type   Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @return json        Array of fields extracted from response from Ontraport
-	 * @uses   WontrapiGo::get_object_meta()
+	 * @param  str     $section  Name of section to retrieve, leave blank for all fields 
+	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID.
+	 * @return json              Array of fields extracted from response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-fields-and-sections-in-an-object-record OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.4.0 Initial 
