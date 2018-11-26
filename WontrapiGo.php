@@ -209,11 +209,32 @@ class WontrapiGo {
 	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
 	 * @link   https://api.ontraport.com/doc/#pagination Max results returned is 50; may need pagination
 	 * @author github.com/oakwoodgates 
-	 * @since  0.3.0 Initial      
+	 * @since  0.3.0 Initial
 	 */
 	public static function get_objects( $type, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		return self::connect()->object()->retrieveMultiple( $args );
+	}
+
+	/**
+	 * Retrieve objects having a tag
+	 * 
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  str|int $tag  Required - Tag ID or name
+	 * @param  array  $args  Array of parameters used to search, sort, etc objects
+	 * @link   https://api.ontraport.com/doc/#retrieve-objects-having-a-tag OP API Documentation
+	 * @return json          Response from OP
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial      
+	 */
+	public static function get_objects_tagged( $type, $tag, $args = array() ) {
+		$args['objectID'] = WontrapiHelp::objectID( $type );
+		if ( is_integer( $tag ) ) {
+			$args['tag_id'] = $tag;
+		} else {
+			$args['tag_name'] = $tag;
+		}
+		return self::connect()->object()->retrieveAllWithTag( $args );
 	}
 
 	/**
