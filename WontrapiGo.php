@@ -733,24 +733,6 @@ class WontrapiGo {
 	}
 
 	/**
-	 * Retrieve fields from contact object meta 
-	 * 
-	 * Retrieves the set of meta data fields for the contact object.
-	 * 
-	 * @return json Response from Ontraport
-	 * @uses   WontrapiGo::get_contact_object_meta() to retrieve data from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-contact-object-meta OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial
-	 */
-	public static function get_contact_object_meta_fields() {
-		$response = self::get_contact_object_meta();
-		$response = json_decode( $response );
-		$number = WontrapiHelp::objectID( 'Contacts' );
-		return json_encode( $response->data->$number->fields );
-	}
-
-	/**
 	 * Retrieve contact collection info
 	 *
 	 * Retrieves information about a collection of contacts, such as the number of contacts that match the given criteria.
@@ -763,24 +745,6 @@ class WontrapiGo {
 	 */
 	public static function get_contact_collection_info( $args = array() ) {
 		return self::connect()->contact()->retrieveCollectionInfo( $args );
-	}
-
-	/**
-	 * Count contacts
-	 * 
-	 * Count the number of contacts that match the given criteria.
-	 * 
-	 * @param  array   $args Search parameters
-	 * @return integer 		 The number of contacts that match the given criteria 
-	 * @uses   WontrapiGo::get_contact_collection_info() to retrieve collection from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-contact-collection-info OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial 
-	 */
-	public static function count_contacts( $args = array() ) {
-		$response = self::get_contact_collection_info( $args );
-		$response = json_decode( $response );
-		return intval( $response->data->count );
 	}
 
 
