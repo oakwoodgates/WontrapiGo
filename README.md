@@ -5,12 +5,23 @@
 
 ## Changelog
 
+## v.0.5.0
+* Introduced:
+	* ``` get_forms() ```
+	* ``` get_objects_tagged() ```
+	* ``` subscribe() ```
+	* ``` unsubscribe() ```
+* Helpers:
+	* ``` get_count() ```
+	* ``` get_object_meta() ```
+	* ``` prepare_dropdown_field() ```
+
 ## v0.4.0 
 * Introduced:
 	* ``` get_contact_id_by_email() ```
 	* ``` get_object_id_by_email() ```
-	* ``` get_object_meta_field() ```
-	* ``` get_object_meta_section() ```
+	* ``` get_field() ```
+	* ``` get_section() ```
 	* ``` create_section() ```
 * Helpers:
 	* ``` get_ids_from_response() ```
@@ -83,10 +94,10 @@
 	* ``` create_or_update_object() ```
 	* ``` get_object() ```
 	* ``` get_object_meta() ```
-	* ``` get_object_meta_data_object() ```
-	* ``` get_object_meta_fields() ```
+	* ~``` get_object_meta_data_object() ```~
+	* ~``` get_object_meta_fields() ```~
 	* ``` get_object_collection_info() ```
-	* ``` count_objects() ```
+	* ~``` count_objects() ```~
 	* ``` update_object() ```
 	* ``` delete_object() ```
 	* ``` create_contact() ```
@@ -95,15 +106,15 @@
 	* ``` update_contact() ```
 	* ``` delete_contact() ```
 	* ``` get_contact_object_meta() ```
-	* ``` get_contact_object_meta_fields() ```
+	* ~``` get_contact_object_meta_fields() ```~
 	* ``` get_contact_collection_info() ```
-	* ``` count_contacts() ```
-	* ``` add_object_to_sequence() ```
-	* ``` remove_object_from_sequence() ```
-	* ``` add_tag_to_object() ```
-	* ``` remove_tag_from_object() ```
-	* ``` add_tag_to_contact() ```
-	* ``` remove_tag_from_contact() ```
+	* ~``` count_contacts() ```~
+	* ``` add_to_sequence() ```
+	* ``` remove_from_sequence() ```
+	* ``` tag() ```
+	* ``` untag() ```
+	* ~``` add_tag_to_contact() ```~
+	* ~``` remove_tag_from_contact() ```~
 	* ``` get_form() ```
 	* ``` get_form_collection_info() ```
 	* ``` count_forms() ```
