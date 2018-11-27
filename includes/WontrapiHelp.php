@@ -372,7 +372,7 @@ class WontrapiHelp {
 	 * @since  0.1.0 Initial
 	 */
 	public static function objectID( $type ) {
-		if ( is_integer( $type ) )
+		if ( is_numeric( $type ) )
 			return $type;
 
 		// let's not deal with strangeLetterCasing; lowercase ftw
