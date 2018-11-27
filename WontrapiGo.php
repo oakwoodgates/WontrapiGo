@@ -800,24 +800,6 @@ class WontrapiGo {
 		return self::connect()->form()->retrieveCollectionInfo( $args );
 	}
 
-	/**
-	 * Count forms
-	 * 
-	 * Count the number of forms that match the given criteria.
-	 * 
-	 * @param  array   $args Search parameters
-	 * @return integer 		 The number of forms that match the given criteria 
-	 * @uses   WontrapiGo::get_form_collection_info() to retrieve collection from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-form-collection-info OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial 
-	 */
-	public static function count_forms( $args = array() ) {
-		$response = self::get_form_collection_info( $args );
-		$response = json_decode( $response );
-		return intval( $response->data->count );
-	}
-
 
 	/** 
 	 * ************************************************************
@@ -838,25 +820,6 @@ class WontrapiGo {
 	 */
 	public static function get_smartform_object_meta() {
 		return self::connect()->form()->retrieveMeta();
-	}
-
-	/**
-	 * Retrieve SmartForm fields from meta
-	 * 
-	 * Retrieves the field meta data for a SmartForm. If you want to retrieve meta for another 
-	 * form type, you should use WontrapiGo::get_object_meta() with the appropriate object type.
-	 * 
-	 * @return json Response from Ontraport
-	 * @uses   WontrapiGo::get_smartform_object_meta() 
-	 * @link   https://api.ontraport.com/doc/#retrieve-smartform-meta OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial
-	 */
-	public static function get_smartform_object_meta_fields() {
-		$response = self::get_smartform_object_meta();
-		$response = json_decode( $response );
-		$number = WontrapiHelp::objectID( 'smartforms' );
-		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
@@ -914,24 +877,6 @@ class WontrapiGo {
 	}
 
 	/**
-	 * Retrieve landing page fields from meta
-	 * 
-	 * Retrieves the fields from meta data of the landing page object.
-	 * 
-	 * @return json Response from Ontraport
-	 * @uses   WontrapiGo::get_landingpage_object_meta() to retrieve data from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-landing-page-meta OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.2.0 Initial
-	 */
-	public static function get_landingpage_object_meta_fields() {
-		$response = self::get_landingpage_object_meta();
-		$response = json_decode( $response );
-		$number = WontrapiHelp::objectID( 'landingpages' );
-		return json_encode( $response->data->$number->fields );
-	}
-
-	/**
 	 * Retrieve landing page collection info
 	 *
 	 * Retrieves information about a collection of landing pages, such as the number of landing pages that match the given criteria.
@@ -944,24 +889,6 @@ class WontrapiGo {
 	 */
 	public static function get_landingpage_collection_info( $args = array() ) {
 		return self::connect()->landingpage()->retrieveCollectionInfo( $args );
-	}
-
-	/**
-	 * Count landing pages
-	 * 
-	 * Count the number of landing pages that match the given criteria.
-	 * 
-	 * @param  array   $args Search parameters
-	 * @return integer 		 The number of forms that match the given criteria 
-	 * @uses   WontrapiGo::get_landingpage_collection_info() to retrieve collection from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-form-collection-info OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.2.0 Initial 
-	 */
-	public static function count_landingpages( $args = array() ) {
-		$response = self::get_landingpage_collection_info( $args );
-		$response = json_decode( $response );
-		return intval( $response->data->count );
 	}
 
 	/**
@@ -1063,24 +990,6 @@ class WontrapiGo {
 	 */
 	public static function get_transaction_object_meta() {
 		return self::connect()->transaction()->retrieveMeta();
-	}
-
-	/**
-	 * Retrieve transaction object meta fields
-	 * 
-	 * Retrieves the set of meta data fields for the transaction object.
-	 * 
-	 * @return json Response from Ontraport
-	 * @uses   WontrapiGo::get_transaction_object_meta() to retrieve data from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-transaction-object-meta OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.2.0 Initial
-	 */
-	public static function get_transaction_object_meta_fields() {
-		$response = self::get_transaction_object_meta();
-		$response = json_decode( $response );
-		$number = WontrapiHelp::objectID( 'transactions' );
-		return json_encode( $response->data->$number->fields );
 	}
 
 	/**
