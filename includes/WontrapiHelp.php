@@ -229,11 +229,11 @@ class WontrapiHelp {
 	 * Does not actually create the field in OP.
 	 * 
 	 * @param  string  $name     Required - the name (or alias) of the field to be created
-	 * @param  array   $options  Array of options
+	 * @param  array   $options  Required - array of options.
 	 * @return object            To be passed to a function to create the field in OP.
 	 * @since  0.5.0 Initial
 	 */
-	public static function prepare_dropdown_field( $name, $options = array() ) {
+	public static function prepare_dropdown_field( $name, $options ) {
 		$dropdown = new OntraportAPI\Models\FieldEditor\ObjectField( $name, 'drop' ); 
 		$dropdown->addDropOptions( $options );
 		return $dropdown;
