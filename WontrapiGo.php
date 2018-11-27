@@ -430,16 +430,16 @@ class WontrapiGo {
 	 *
 	 * Adds one or more objects to one or more sequences.
 	 * 
-	 * @param  str|int $type     Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  string $ids       Required - An array as a comma-delimited list of the IDs of the objects to be added to sequences.
 	 * @param  string $sequences Required - An array as a comma-delimited list of the IDs of the sequence(s) to which objects should be added.
+	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID. Default is contact.
 	 * @param  array  $args      Optional - Params for search (see docs)
 	 * @return json   		     Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#add-an-object-to-a-sequence OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function add_object_to_sequence( $type, $ids, $sequences, $args = array() ) {
+	public static function add_to_sequence( $ids, $sequences, $type = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $sequences;
@@ -451,16 +451,16 @@ class WontrapiGo {
 	 *
 	 * This endpoint removes one or more objects from one or more sequences.
 	 * 
-	 * @param  str|int $type     Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  string $ids       Required - An array as a comma-delimited list of the IDs of the objects to be removed from sequence(s).
 	 * @param  string $sequences Required - An array as a comma-delimited list of the IDs of the sequences(s) from which to remove objects.
+	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID. Default is contact.
 	 * @param  array  $args      Optional - Params for search (see docs)
 	 * @return json   			 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#remove-an-object-from-a-sequence OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function remove_object_from_sequence( $type, $ids, $sequences, $args = array() ) {
+	public static function remove_from_sequence( $ids, $sequences, $type = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $sequences;
@@ -472,16 +472,16 @@ class WontrapiGo {
 	 *
 	 * Adds one or more tags to one or more objects.
 	 * 
-	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  string $ids   Required - An array as a comma-delimited list of the IDs of the objects to be tagged.
 	 * @param  string $tags  Required - An array as a comma-delimited list of the IDs of the tag(s) which should be added to objects.
+	 * @param  str|int $type Object type (not for Custom Objects). Converts to objectID. Default is contact.
 	 * @param  array  $args  Optional - Params for search (see docs)
 	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#tag-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function add_tag_to_object( $type, $ids, $tags, $args = array() ) {
+	public static function add_tag( $ids, $tags, $type = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $tags;
@@ -493,54 +493,20 @@ class WontrapiGo {
 	 *
 	 * This endpoint removes one or more tags from one or more objects.
 	 * 
-	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
 	 * @param  string $ids   Required - An array as a comma-delimited list of the IDs of the objects to remove from tag(s).
 	 * @param  string $tags  Required - An array as a comma-delimited list of the IDs of the tag(s) to be removed from objects.
+	 * @param  str|int $type Object type (not for Custom Objects). Converts to objectID. Default is contact.
 	 * @param  array  $args  Optional - Params for search (see docs)
 	 * @return json   		 Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#remove-a-tag-from-an-object OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function remove_tag_from_object( $type, $ids, $tags, $args = array() ) {
+	public static function remove_tag( $ids, $tags, $type = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $tags;
 		return self::connect()->object()->removeTag( $args );
-	}
-
-	/**
-	 * Add tag to contact
-	 *
-	 * Adds one or more tags to one or more contacts.
-	 * 
-	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the contacts to be tagged.
-	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) which should be added to contacts.
-	 * @param  array  $args Optional - Params for search (see docs)
-	 * @return json   		Response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#tag-an-object OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial
-	 */
-	public static function add_tag_to_contact( $ids, $tags, $args = array() ) {
-		return self::add_tag_to_object( 'Contacts', $ids, $tags, $args );
-	}
-
-	/**
-	 * Remove a tag from a contact
-	 *
-	 * This endpoint removes one or more tags from one or more contacts.
-	 * 
-	 * @param  string $ids  Required - An array as a comma-delimited list of the IDs of the contacts to remove from tag(s).
-	 * @param  string $tags Required - An array as a comma-delimited list of the IDs of the tag(s) to be removed from contacts.
-	 * @param  array  $args Optional - Params for search (see docs)
-	 * @return json   		Response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#remove-a-tag-from-an-object OP API Documentation
-	 * @author github.com/oakwoodgates 
-	 * @since  0.1.0 Initial
-	 */
-	public static function remove_tag_from_contact( $ids, $tags, $args = array() ) {
-		return self::remove_tag_from_object( 'Contacts', $ids, $tags, $args );
 	}
 
 
