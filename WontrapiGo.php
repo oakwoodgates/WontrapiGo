@@ -422,7 +422,7 @@ class WontrapiGo {
 	/** 
 	 * ************************************************************
 	 * Add Objects to / Remove Objects from 
-	 * Tags, Sequences, Rules, and Campaigns
+	 * Tags, Sequences, and Campaigns
 	 * ************************************************************
 	 */
 
