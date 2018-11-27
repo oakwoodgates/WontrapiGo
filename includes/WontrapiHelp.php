@@ -225,6 +225,21 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * Creates the markup for a dropdown field (with options) to be created. 
+	 * Does not actually create the field in OP.
+	 * 
+	 * @param  string  $name     Required - the name (or alias) of the field to be created
+	 * @param  array   $options  Array of options
+	 * @return object            To be passed to a function to create the field in OP.
+	 * @since  0.5.0 Initial
+	 */
+	public static function prepare_dropdown_field( $name, $options = array() ) {
+		$dropdown = new OntraportAPI\Models\FieldEditor\ObjectField( $name, 'drop' ); 
+		$dropdown->addDropOptions( $options );
+		return $dropdown;
+	}
+
+	/**
 	 * Creates the markup for a field options to be created. 
 	 * Does not actually create the field or options in OP.
 	 * 
@@ -270,13 +285,13 @@ class WontrapiHelp {
 		$section = new OntraportAPI\Models\FieldEditor\ObjectSection( $name, $col_1 );
 
 		if ( $col_2 ) {
-		//	$section->putFieldsInColumn( 1, $col_2 );
-			$section = self::add_col( $section, $col_2, 2 );
+			$section->putFieldsInColumn( 1, $col_2 );
+		//	$section = self::add_col( $section, $col_2, 2 );
 		}
 
 		if ( $col_3 ) {
-		//	$section->putFieldsInColumn( 2, $col_2 );
-			$section = self::add_col( $section, $col_3, 3 );
+			$section->putFieldsInColumn( 2, $col_2 );
+		//	$section = self::add_col( $section, $col_3, 3 );
 		}
 
 		return $section;
