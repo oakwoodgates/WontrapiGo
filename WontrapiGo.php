@@ -618,14 +618,16 @@ class WontrapiGo {
 	 * unnecessary API requests by utilizing criteria and our pagination tools to 
 	 * select only the data set you require.
 	 * 
-	 * @param  array $args Array of parameters used to search, sort, etc contacts
+	 * @param  string $ids  An array as a comma-delimited list of the IDs of the contacts to retrieve. Entering a value of 0 will result in all contacts being selected.
+	 * @param  array  $args Array of parameters used to search, sort, etc contacts
 	 * @return json   	   Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-contacts OP API Documentation
 	 * @link  https://api.ontraport.com/doc/#criteria OP search critera
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	public static function get_contacts( $args = array() ) {
+	public static function get_contacts( $ids = 0, $args = array() ) {
+		$args['ids'] = $ids;
 		return self::connect()->contact()->retrieveMultiple( $args );
 	}
 
@@ -645,7 +647,7 @@ class WontrapiGo {
 	 */
 	public static function get_contacts_where( $field, $operator, $value, $args = array() ) {
 		$args['condition'] = WontrapiHelp::prepare_search_condition( $field, $operator, $value );
-		return self::get_contacts( $args );
+		return self::get_contacts( 0, $args );
 	}
 
 	/**
@@ -679,7 +681,7 @@ class WontrapiGo {
 	 * @since  0.4.0 Initial         
 	 */
 	public static function get_contact_id_by_email( $email, $all = 0 ) {
-		return self::get_object_id_by_email( $email, $all, 'contact' );
+		return self::get_object_id_by_email( $email, $all, 0 );
 	}
 
 	/**
