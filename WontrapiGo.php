@@ -203,6 +203,7 @@ class WontrapiGo {
 	 * select only the data set you require.
 	 * 
 	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  string $ids  An integer array as a comma-delimited list of the IDs of the objects to retrieve. Entering a value of 0 will result in all objects of specified type being selected.
 	 * @param  array   $args Array of parameters used to search, sort, etc objects
 	 * @return json   	     Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
@@ -211,8 +212,9 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	public static function get_objects( $type, $args = array() ) {
+	public static function get_objects( $type, $ids = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
+		$args['ids'] = $ids;
 		return self::connect()->object()->retrieveMultiple( $args );
 	}
 
