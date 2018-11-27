@@ -421,7 +421,8 @@ class WontrapiGo {
 
 	/** 
 	 * ************************************************************
-	 * Tags and Sequences 
+	 * Add Objects to / Remove Objects from 
+	 * Tags, Sequences, Rules, and Campaigns
 	 * ************************************************************
 	 */
 
@@ -481,7 +482,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function add_tag( $ids, $tags, $type = 0, $args = array() ) {
+	public static function tag( $ids, $tags, $type = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['add_list'] = $tags;
@@ -502,11 +503,53 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.1.0 Initial
 	 */
-	public static function remove_tag( $ids, $tags, $type = 0, $args = array() ) {
+	public static function untag( $ids, $tags, $type = 0, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
 		$args['ids'] = $ids;
 		$args['remove_list'] = $tags;
 		return self::connect()->object()->removeTag( $args );
+	}
+
+	/**
+	 * Subscribes one or more objects to one or more campaigns or sequences
+	 * 
+	 * @param  string  $ids      An array as a comma-delimited list of the IDs of the objects to be subscribed.
+	 * @param  string  $list     An array as a comma-delimited list of the IDs of the campaign(s) or sequence(s) the objects should be subscribed to. 
+	 * @param  string  $sub_type Either Campaign or Sequence
+	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID. Default is contact.
+	 * @param  array   $args     Optional - Params for search (see docs)
+	 * @return json              Response from Ontraport
+	 * @link   http://api.ontraport.com/doc/#subscribe-an-object-to-a-campaign-or-sequence OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial
+	 */
+	public static function subscribe( $ids, $list, $sub_type = 'Campaign', $type = 0, $args = array() ) {
+		$args['objectID'] = WontrapiHelp::objectID( $type );
+		$args['ids'] = $ids;
+		$args['add_list'] = $list;
+		$args['sub_type'] = $sub_type;
+		return self::connect()->object()->subscribe( $args );
+	}
+
+	/**
+	 * Unsubscribes one or more objects to one or more campaigns or sequences
+	 * 
+	 * @param  string  $ids      An array as a comma-delimited list of the IDs of the objects to unsubscribed.
+	 * @param  string  $list     An array as a comma-delimited list of the IDs of the campaign(s) or sequence(s) to unsubscribe objects from. 
+	 * @param  string  $sub_type Either Campaign or Sequence
+	 * @param  str|int $type     Object type (not for Custom Objects). Converts to objectID. Default is contact.
+	 * @param  array   $args     Optional - Params for search (see docs)
+	 * @return json              Response from Ontraport
+	 * @link   http://api.ontraport.com/doc/#unsubscribe-an-object-from-a-campaign-or-sequence OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial
+	 */
+	public static function unsubscribe( $ids, $list, $sub_type = 'Campaign', $type = 0, $args = array() ) {
+		$args['objectID'] = WontrapiHelp::objectID( $type );
+		$args['ids'] = $ids;
+		$args['remove_list'] = $list;
+		$args['sub_type'] = $sub_type;
+		return self::connect()->object()->unsubscribe( $args );
 	}
 
 
