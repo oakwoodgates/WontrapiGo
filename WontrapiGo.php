@@ -203,7 +203,6 @@ class WontrapiGo {
 	 * select only the data set you require.
 	 * 
 	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
-	 * @param  string $ids  An integer array as a comma-delimited list of the IDs of the objects to retrieve. Entering a value of 0 will result in all objects of specified type being selected.
 	 * @param  array   $args Array of parameters used to search, sort, etc objects
 	 * @return json   	     Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
@@ -212,9 +211,8 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	public static function get_objects( $type, $ids = 0, $args = array() ) {
+	public static function get_objects( $type, $args = array() ) {
 		$args['objectID'] = WontrapiHelp::objectID( $type );
-		$args['ids'] = $ids;
 		return self::connect()->object()->retrieveMultiple( $args );
 	}
 
@@ -620,7 +618,6 @@ class WontrapiGo {
 	 * unnecessary API requests by utilizing criteria and our pagination tools to 
 	 * select only the data set you require.
 	 * 
-	 * @param  string $ids  An array as a comma-delimited list of the IDs of the contacts to retrieve. Entering a value of 0 will result in all contacts being selected.
 	 * @param  array  $args Array of parameters used to search, sort, etc contacts
 	 * @return json   	   Response from Ontraport
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-contacts OP API Documentation
@@ -628,8 +625,7 @@ class WontrapiGo {
 	 * @author github.com/oakwoodgates 
 	 * @since  0.3.0 Initial
 	 */
-	public static function get_contacts( $ids = 0, $args = array() ) {
-		$args['ids'] = $ids;
+	public static function get_contacts( $args = array() ) {
 		return self::connect()->contact()->retrieveMultiple( $args );
 	}
 
@@ -649,7 +645,7 @@ class WontrapiGo {
 	 */
 	public static function get_contacts_where( $field, $operator, $value, $args = array() ) {
 		$args['condition'] = WontrapiHelp::prepare_search_condition( $field, $operator, $value );
-		return self::get_contacts( 0, $args );
+		return self::get_contacts( $args );
 	}
 
 	/**
@@ -775,15 +771,13 @@ class WontrapiGo {
 	/**
 	 * Retrieve multiple forms
 	 * 
-	 * @param  array  $ids  An integer array as a comma-delimited list of the IDs of the forms to retrieve. Entering a value of 0 will result in all forms being selected
 	 * @param  array  $args Array of optional args
 	 * @return json       Response from OP
 	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-forms OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.5.0 Initial
 	 */
-	public static function get_forms( $ids = array(), $args = array() ) {
-		$args['ids'] = $ids;
+	public static function get_forms( $args = array() ) {
 		return self::connect()->form()->retrieveMultiple( $args );
 	}
 
