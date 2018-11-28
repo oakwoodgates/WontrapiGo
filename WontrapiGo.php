@@ -796,13 +796,6 @@ class WontrapiGo {
 		return self::connect()->form()->retrieveCollectionInfo( $args );
 	}
 
-
-	/** 
-	 * ************************************************************
-	 * SmartForms 
-	 * ************************************************************
-	 */
-
 	/**
 	 * Retrieve SmartForm meta
 	 * 
@@ -833,6 +826,22 @@ class WontrapiGo {
 	public static function get_smartform_html( $id ) {
 		$args = array( 'id' => $id );
 		return self::connect()->form()->retrieveSmartFormHTML( $args );
+	}
+
+	/**
+	 * Retrieve all blocks for form
+	 *
+	 * Retrieves IDs for all form blocks in a specified form or landing page.
+	 * 
+	 * @param  string $name Required - The name of the form or landing page.
+	 * @return json 	    Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-all-form-blocks OP API Documentation
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial 
+	 */
+	public static function get_form_blocks( $name ) {
+		$args = array( 'name' => $name );
+		return self::connect()->form()->retrieveBlocksByForm( $args );
 	}
 
 
