@@ -835,7 +835,7 @@ class WontrapiGo {
 	 * 
 	 * @param  string $name Required - The name of the form or landing page.
 	 * @return json 	    Response from Ontraport
-	 * @link   https://api.ontraport.com/doc/#retrieve-all-form-blocks OP API Documentation
+	 * @link   https://api.ontraport.com/doc/#retrieve-all-blocks-for-form OP API Documentation
 	 * @author github.com/oakwoodgates 
 	 * @since  0.5.0 Initial 
 	 */
