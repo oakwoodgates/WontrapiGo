@@ -142,10 +142,10 @@ class WontrapiHelp {
 						}
 					} else {
 						// from retrieve object meta
-						return reset( $data );						
+					//	return reset( $data );						
+					//	@todo make function for getting retrieve object meta data
+						return $data;						
 					}
-			//	} elseif ( isset( $data['ids'] ) ) {
-			//		return $data['ids'];
 				} else {
 					// not formatted like popular objects, or from creating fields and sections
 					return $data;
