@@ -210,6 +210,26 @@ class WontrapiHelp {
 	}
 
 	/**
+	 * Get an array of Tags from a retrieved Contact
+	 *
+	 * @param  json $contact_data JSON response from WontrapiGo::get_contact();
+	 * @return array
+	 * @author github.com/oakwoodgates 
+	 * @since  0.5.0 Initial
+	 */
+	public static function contact_tag_array( $contact ) {
+		$contact = self::get_data_from_response( $contact, false );
+		if ( isset( $contact['contact_cat'] ) ) {
+			$contact_tags = $contact['contact_cat'];
+			if ( $contact_tags ) {
+				return array_filter( explode( '*/*', $contact_tags ) );
+			}
+		}
+		return array();
+	}
+
+
+	/**
 	 * Creates the markup for a field to be created. 
 	 * Does not actually create the field in OP.
 	 * 
