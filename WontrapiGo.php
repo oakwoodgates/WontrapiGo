@@ -590,7 +590,7 @@ class WontrapiGo {
 	 * @since  0.1.0 Initial
 	 */
 	public static function create_or_update_contact( $email, $args = array() ) {
-		$args = array( 'email' => $email );
+		$args['email'] = $email;
 		return self::connect()->contact()->saveOrUpdate( $args );
 	}
 
