@@ -217,6 +217,26 @@ class WontrapiGo {
 	}
 
 	/**
+	 * Retrieve multiple objects
+	 * 
+	 * Retrieves a collection of objects based on a set of parameters. The objects will 
+	 * be in groups of 50.
+	 * 
+	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
+	 * @param  array   $args Array of parameters used to search, sort, etc objects
+	 * @return json   	     Response from Ontraport
+	 * @link   https://api.ontraport.com/doc/#retrieve-multiple-objects OP API Documentation
+	 * @link   https://api.ontraport.com/doc/#criteria OP search critera
+	 * @link   https://api.ontraport.com/doc/#pagination Example
+	 * @author github.com/oakwoodgates 
+	 * @since  0.6.0 Initial
+	 */
+	public static function get_objects_paginated( $type, $args = array() ) {
+		$args['objectID'] = WontrapiHelp::objectID( $type );
+		return self::connect()->object()->retrieveMultiplePaginated( $args );
+	}
+
+	/**
 	 * Retrieve objects having a tag
 	 * 
 	 * @param  str|int $type Required - Object type (not for Custom Objects). Converts to objectID.
